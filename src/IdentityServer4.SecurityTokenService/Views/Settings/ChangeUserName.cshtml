@@ -1,0 +1,52 @@
+@model IdentityServer4.SecurityTokenService.Models.Settings.ChangeUserNameViewModel
+<h5>Change username</h5>
+<hr/>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <p>Changing your username can have unintended side effects.</p>
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#changeUserNameModal">
+                Change username
+            </button>
+            <br/>
+            <br/>
+            <p>
+                <svg class="octicon octicon-question" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M6 10h2v2H6v-2zm4-3.5C10 8.64 8 9 8 9H6c0-.55.45-1 1-1h.5c.28 0 .5-.22.5-.5v-1c0-.28-.22-.5-.5-.5h-1c-.28 0-.5.22-.5.5V7H4c0-1.5 1.5-3 3-3s3 1 3 2.5zM7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 011.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7z"></path>
+                </svg>Looking to manage account security settings? You can find them in the Security tab.
+            </p>
+        </div>
+    </div>
+    <div class="modal fade" id="changeUserNameModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- 模态框头部 -->
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title">Enter a new username</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                    <form action="/account/username" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input asp-for="NewUserName" class="form-control"/>
+                                    <span class="text-secondary">Choose a new username</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="submit" class="form-control btn btn-outline-primary" value="Change my username"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

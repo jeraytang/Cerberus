@@ -1,0 +1,38 @@
+@model IdentityServer4.SecurityTokenService.Models.Account.VerifyAuthenticatorCodeViewModel
+@{
+    ViewData["Title"] = "Verify";
+}
+
+<h4>Verify authenticator code.</h4>
+<hr/>
+<form asp-controller="Account" asp-action="VerifyAuthenticatorCode" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+    @(await Html.PartialAsync("_ValidationSummary"))
+    <input asp-for="RememberMe" type="hidden"/>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label asp-for="Code" class="control-label"></label>
+            <input asp-for="Code" class="form-control"/>
+            <span asp-validation-for="Code" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-offset-2 col-md-4">
+        <div class="form-group">
+            <div class="checkbox icheck-default">
+                <input asp-for="RememberBrowser"/>
+                <label asp-for="RememberBrowser"></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-offset-2 col-md-4">
+        <div class="form-group">
+            <button type="submit" class="btn btn-outline-primary">Submit</button>
+        </div>
+    </div>
+    <p>
+        <a asp-action="UseRecoveryCode">Lost your authenticator?</a>
+    </p>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

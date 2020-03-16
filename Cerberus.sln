@@ -1,0 +1,86 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hosting", "src\Hosting\Hosting.csproj", "{9B804830-129F-494C-BDC1-E9E067D59EC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.Storage.MySql", "src\IdentityServer4.Storage.MySql\IdentityServer4.Storage.MySql.csproj", "{B81781A6-3A62-42C6-81B3-5B6171C182FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.MySql", "src\IdentityServer4.MySql\IdentityServer4.MySql.csproj", "{236F986B-66AA-4D95-AEE7-07E40D06370E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.Storage.Adapter", "src\IdentityServer4.Storage.Adapter\IdentityServer4.Storage.Adapter.csproj", "{FB6066CD-0289-40B7-A5FF-41920615158F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.SecurityTokenService", "src\IdentityServer4.SecurityTokenService\IdentityServer4.SecurityTokenService.csproj", "{A73763CC-A8F0-4650-A0D4-C93FA0C372E5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2BE4A25E-DF26-4016-BCEB-DB63E3899F5E}"
+ProjectSection(SolutionItems) = preProject
+	LICENSE = LICENSE
+	.gitignore = .gitignore
+	README.MD = README.MD
+	.editconfig = .editconfig
+	start_sts.sh = start_sts.sh
+	build_sts_image.sh = build_sts_image.sh
+	build_admin_image.sh = build_admin_image.sh
+	start_sts_inst.sh = start_sts_inst.sh
+	start_admin_inst.sh = start_admin_inst.sh
+	build_cerberus_image.sh = build_cerberus_image.sh
+	build_cerberus_api_image.sh = build_cerberus_api_image.sh
+	publish.sh = publish.sh
+	nuget.config = nuget.config
+EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.Admin", "src\IdentityServer4.Admin\IdentityServer4.Admin.csproj", "{B183A3DC-D25C-4BCF-8832-F5C5BA20D3E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dockerfile", "Dockerfile", "{20A6630D-53F0-4DDD-B7DA-622BF1C24592}"
+ProjectSection(SolutionItems) = preProject
+	dockerfile\STS = dockerfile\STS
+	dockerfile\Admin = dockerfile\Admin
+	dockerfile\Cerberus = dockerfile\Cerberus
+	dockerfile\Cerberus.API = dockerfile\Cerberus.API
+EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cerberus", "src\Cerberus\Cerberus.csproj", "{1EBF0A9E-52B2-4AB9-A7D6-51CF3AB29322}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cerberus.API", "src\Cerberus.API\Cerberus.API.csproj", "{34DD8924-E285-4F9B-BE05-743261026C52}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B804830-129F-494C-BDC1-E9E067D59EC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B804830-129F-494C-BDC1-E9E067D59EC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B804830-129F-494C-BDC1-E9E067D59EC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B804830-129F-494C-BDC1-E9E067D59EC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B81781A6-3A62-42C6-81B3-5B6171C182FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B81781A6-3A62-42C6-81B3-5B6171C182FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B81781A6-3A62-42C6-81B3-5B6171C182FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B81781A6-3A62-42C6-81B3-5B6171C182FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{236F986B-66AA-4D95-AEE7-07E40D06370E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{236F986B-66AA-4D95-AEE7-07E40D06370E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{236F986B-66AA-4D95-AEE7-07E40D06370E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{236F986B-66AA-4D95-AEE7-07E40D06370E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB6066CD-0289-40B7-A5FF-41920615158F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB6066CD-0289-40B7-A5FF-41920615158F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB6066CD-0289-40B7-A5FF-41920615158F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB6066CD-0289-40B7-A5FF-41920615158F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A73763CC-A8F0-4650-A0D4-C93FA0C372E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A73763CC-A8F0-4650-A0D4-C93FA0C372E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A73763CC-A8F0-4650-A0D4-C93FA0C372E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A73763CC-A8F0-4650-A0D4-C93FA0C372E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B183A3DC-D25C-4BCF-8832-F5C5BA20D3E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B183A3DC-D25C-4BCF-8832-F5C5BA20D3E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B183A3DC-D25C-4BCF-8832-F5C5BA20D3E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B183A3DC-D25C-4BCF-8832-F5C5BA20D3E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EBF0A9E-52B2-4AB9-A7D6-51CF3AB29322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EBF0A9E-52B2-4AB9-A7D6-51CF3AB29322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EBF0A9E-52B2-4AB9-A7D6-51CF3AB29322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EBF0A9E-52B2-4AB9-A7D6-51CF3AB29322}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34DD8924-E285-4F9B-BE05-743261026C52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34DD8924-E285-4F9B-BE05-743261026C52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34DD8924-E285-4F9B-BE05-743261026C52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34DD8924-E285-4F9B-BE05-743261026C52}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{20A6630D-53F0-4DDD-B7DA-622BF1C24592} = {2BE4A25E-DF26-4016-BCEB-DB63E3899F5E}
+	EndGlobalSection
+EndGlobal

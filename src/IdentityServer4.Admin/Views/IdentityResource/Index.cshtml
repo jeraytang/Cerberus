@@ -1,0 +1,228 @@
+﻿@{
+    ViewData["Title"] = "IdentityResource";
+}
+
+@section Styles
+{
+    <style>
+        .modal-header, .modal-footer{
+            border: 0;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-8">
+        <h5>
+            IdentityResource
+            <small></small>
+        </h5>
+    </div>
+    <div class="col-sm-4">
+        <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#addModal">Add</button>
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered" style="width: 100%">
+            <thead>
+            <tr>
+                <th style="width: 25px;"></th>
+                <th>Name</th>
+                <th>DisplayName</th>
+                <th>Description</th>
+                <th>UserClaims</th>
+                <th>Emphasize</th>
+                <th>Required</th>
+                <th style="width: 175px">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-if="resources.length===0">
+                <td colspan="8">None</td>
+            </tr>
+            <tr :id="resource.id" v-else v-for="resource in resources">
+                <td v-if="resource.enabled" class="badge-success"></td>
+                <td v-else class="badge-warning"></td>
+                <td v-text="resource.name"></td>
+                <td v-text="resource.displayName"></td>
+                <td v-text="resource.description"></td>
+                <td v-text="resource.userClaims"></td>
+                <td v-text="resource.emphasize"></td>
+                <td v-text="resource.required"></td>
+                <td>
+                    <button title="edit" class="btn btn-outline-primary" data-toggle="modal" data-target="#viewModal"><i class="fa fa-fw fa-edit"></i></button>
+                    <button title="disable" v-if="resource.enabled" class="btn btn-outline-primary" v-on:click="disable"><i class="fa fa-fw fa-lock"></i></button>
+                    <button title="enable" v-else class="btn btn-outline-primary" v-on:click="enable"><i class="fa fa-fw fa-unlock"></i></button>
+                    <button title="remove" class="btn btn-outline-primary" v-on:click="remove"><i class="fa fa-fw fa-trash"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row" v-if="count > limit">
+    <div class="col-md-12">
+        <pagination :page="page" :count="count" :limit="limit"></pagination>
+    </div>
+</div>
+<div class="modal fade" id="addModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add identity resource</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" v-model="newResource.name" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>DisplayName</label>
+                            <input type="text" v-model="newResource.displayName" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea type="text" v-model="newResource.description" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>User Claims</label>
+                            <textarea v-model="newResource.userClaims" type="text" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>ShowInDiscoveryDocument</label>
+                            <select2 style="width: 100%" :options="trueOrFalse" v-model="newResource.showInDiscoveryDocument">
+                            </select2>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Emphasize</label>
+                            <select2 style="width: 100%" :options="trueOrFalse" v-model="newResource.emphasize">
+                            </select2>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Required</label>
+                            <select2 style="width: 100%" :options="trueOrFalse" v-model="newResource.required">
+                            </select2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button type="button" v-on:click="submit" class="btn btn-outline-primary">Submit</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="viewModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">Update identity resource</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" v-model="originResource.name" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>DisplayName</label>
+                            <input type="text" v-model="originResource.displayName" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea type="text" v-model="originResource.description" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>User Claims</label>
+                            <textarea v-model="originResource.userClaims" type="text" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>ShowInDiscoveryDocument</label>
+                            <select2 style="width: 100%" :options="trueOrFalse" v-model="originResource.showInDiscoveryDocument">
+                            </select2>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Emphasize</label>
+                            <select2 style="width: 100%" :options="trueOrFalse" v-model="originResource.emphasize">
+                            </select2>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Required</label>
+                            <select2 style="width: 100%" :options="trueOrFalse" v-model="originResource.required">
+                            </select2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button type="button" v-on:click="update" class="btn btn-outline-primary">Submit</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <environment names="Development">
+        <script src="~/js/identityResource.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/identityResource.min.js" asp-append-version="true"></script>
+    </environment>
+}

@@ -1,0 +1,11 @@
+{
+  "name": "identityserver-sts",
+  "dependencies": {
+    "select2": "^4.0.12",
+    "jquery": "^3.4.1",
+    "bootstrap": "^4.4.1",
+    "jquery-validation": "^1.19.1",
+    "jquery-validation-unobtrusive": "^3.2.11",
+    "icheck-bootstrap": "^3.0.1"
+  }
+}

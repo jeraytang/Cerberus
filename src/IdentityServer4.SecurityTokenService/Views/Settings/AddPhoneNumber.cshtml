@@ -1,0 +1,25 @@
+@model IdentityServer4.SecurityTokenService.Models.Settings.AddPhoneNumberViewModel
+<form asp-controller="Settings" asp-action="AddPhoneNumber" method="post" class="form-horizontal" role="form">
+    <partial name="_ValidationSummary"/>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control"/>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-2 col-md-6">
+            <div class="form-group">
+                <button type="submit" class="btn btn-outline-primary">Send verification code</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

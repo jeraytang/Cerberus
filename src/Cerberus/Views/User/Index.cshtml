@@ -1,0 +1,285 @@
+﻿@{
+    ViewData["Title"] = "User";
+}
+
+@section Styles
+{
+    <style>
+        .modal-header, .modal-footer{
+            border: 0;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h5>
+            User
+            <small></small>
+        </h5>
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-inline">
+            <input style="width: 240px" type="text" class="form-control" v-model="keyword"/>
+            <button style="margin-left: 15px" class="btn btn-outline-primary" v-on:click="search">
+                <i class="fa fa-fw fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#addModal">Add</button>
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered" style="width: 100%">
+            <thead>
+            <tr>
+                <th></th>
+                <th style="width: 160px">UserName</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>PhoneNumber</th>
+                <th>Source</th>
+                <th style="width: 275px">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-if="items.length===0">
+                <td colspan="7">None</td>
+            </tr>
+            <tr :id="item.id" :tenantId="item.tenantId" v-else v-for="item in items">
+                <td v-if="item.enabled" class="badge-success"></td>
+                <td v-else class="badge-warning"></td>
+                <td v-text="item.userName"></td>
+                <td v-text="item.email"></td>
+                <td v-text="item.name"></td>
+                <td v-text="item.phoneNumber"></td>
+                <td v-text="item.source"></td>
+                <td v-if="item.userName === 'admin'">
+                </td>
+                <td v-else>
+                    <button title="Edit user" class="btn btn-outline-primary" data-toggle="modal" data-target="#viewModal">
+                        <i class="fa fa-fw fa-edit"></i>
+                    </button>
+                    <a title="Edit roles" class="btn btn-outline-primary" :href="'/users/' + item.id + '/roles'">
+                        <i class="fa fa-fw fa-user-circle"></i>
+                    </a>
+                    <a title="Edit permission" class="btn btn-outline-primary" :href="'/users/' + item.id + '/permissions'">
+                        <i class="fa fa-fw fa-cog"></i>
+                    </a>
+                    <button title="Disable user" v-if="item.enabled" class="btn btn-outline-primary" v-on:click="disable">
+                        <i class="fa fa-fw fa-lock"></i>
+                    </button>
+                    <button title="Enable user" v-else class="btn btn-outline-primary" v-on:click="enable">
+                        <i class="fa fa-fw fa-unlock"></i>
+                    </button>
+                    <button title="Remove user" class="btn btn-outline-primary" v-on:click="remove">
+                        <i class="fa fa-fw fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row" v-if="count > limit">
+    <div class="col-md-12">
+        <pagination :page="page" :count="count" :limit="limit"></pagination>
+    </div>
+</div>
+<div class="modal fade" id="addModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add user</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" v-model="newItem.email" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" v-model="newItem.password" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Source</label>
+                            <input type="text" v-model="newItem.source" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button type="button" v-on:click="submit" class="btn btn-outline-primary">Submit</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="viewModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">Update user</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>UserName</label>
+                            <input type="text" v-model="originItem.userName" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" v-model="originItem.email" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>FamilyName</label>
+                            <input type="text" v-model="originItem.familyName" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>GivenName</label>
+                            <input type="email" v-model="originItem.givenName" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Birthday</label>
+                            <input type="date" v-model="originItem.birthday" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Sex</label>
+                            <select2 style="width: 100%" :options="sex" v-model="originItem.sex">
+                            </select2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" v-model="originItem.location" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>NickName</label>
+                            <input type="text" v-model="originItem.nickName" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Mobile</label>
+                            <input type="text" v-model="originItem.phoneNumber" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Telephone</label>
+                            <input type="email" v-model="originItem.telephone" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Company</label>
+                            <input type="email" v-model="originItem.company" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Department</label>
+                            <input type="text" v-model="originItem.department" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Source</label>
+                            <input type="text" v-model="originItem.source" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" v-model="originItem.title" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Bio</label>
+                            <input type="text" v-model="originItem.bio" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Website</label>
+                            <input type="text" v-model="originItem.website" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Fax</label>
+                            <input type="text" v-model="originItem.fax" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button type="button" v-on:click="update" class="btn btn-outline-primary">Submit</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <environment names="Development">
+        <script src="~/js/user.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/user.min.js" asp-append-version="true"></script>
+    </environment>
+}

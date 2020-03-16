@@ -1,0 +1,40 @@
+@using IdentityServer4.Extensions
+@using IdentityServer4.SecurityTokenService.Common
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject STSOptions STSOptions
+@{
+    string name = null;
+    if (!true.Equals(ViewData["signed-out"]))
+    {
+        name = Context.User?.GetDisplayName();
+    }
+}
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="navbar-right">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="btn" asp-controller="Settings" asp-action="Profile" title="Profile">@name</a>
+                </li>
+                <li>
+                    <a class="btn" asp-action="Logout" asp-controller="Account">Logout</a>
+                </li>
+            </ul>
+        </div>
+    }
+    else
+    {
+        @if (STSOptions.OpenRegister)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+            </li>
+        }
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+        </li>
+    }
+</ul>

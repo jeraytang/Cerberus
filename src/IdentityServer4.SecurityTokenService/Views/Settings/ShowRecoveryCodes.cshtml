@@ -1,0 +1,58 @@
+@model IdentityServer4.SecurityTokenService.Models.Settings.ShowRecoveryCodesModel
+<div class="row">
+    <div class="col-md-4">
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-secondary">Personal settings</li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Profile">Profile</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Account">Account</a>
+            </li>
+            <li class="list-group-item list-group-item-action active">
+                <a class="text-white" asp-controller="Settings" asp-action="Security">Security</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Email">Email</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="ExternalLogins">External Logins</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Applications">Applications</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-8">
+        <h4>Show recovery codes</h4>
+        <hr/>
+        @if (!string.IsNullOrWhiteSpace(Model.Message))
+        {
+            <div class="alert alert-info alert-dismissible">
+
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Info</strong> @Model.Message
+            </div>
+        }
+        <div class="alert alert-warning" role="alert">
+            <p>
+                <span class="glyphicon glyphicon-warning-sign"></span>
+                <strong>Put these codes in a safe place.</strong>
+            </p>
+            <p>
+                If you lose your device and don't have the recovery codes you will lose access to your account.
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                @for (var row = 0; row < Model.RecoveryCodes.Length; row += 2)
+                {
+                    <code class="recovery-code">@Model.RecoveryCodes[row]</code>
+                    <text>&nbsp;</text>
+                    <code class="recovery-code">@Model.RecoveryCodes[row + 1]</code>
+                    <br/>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+@model IdentityServer4.SecurityTokenService.Models.Account.LoggedOutViewModel
+
+@{
+    // set this so the layout rendering sees an anonymous user
+    ViewData["signed-out"] = true;
+}
+
+<h4>
+    Logout
+    <small>You are now logged out</small>
+</h4>
+@if (string.IsNullOrWhiteSpace(Model.PostLogoutRedirectUri) && string.IsNullOrWhiteSpace(Model.SignOutIframeUrl))
+{
+    <script type="text/javascript">
+        window.location.href='/';
+    </script>
+}
+else
+{
+    <div class="page-header logged-out">
+
+        @if (Model.PostLogoutRedirectUri != null)
+        {
+            <div>
+                Click <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">here</a> to return to the
+                <span>@Model.ClientName</span> application.
+            </div>
+        }
+
+        @if (Model.SignOutIframeUrl != null)
+        {
+            <iframe width="0" height="0" class="signout" src="@Model.SignOutIframeUrl"></iframe>
+        }
+    </div>
+}
+
+@section scripts
+{
+    @if (Model.AutomaticRedirectAfterSignOut)
+    {
+        <script src="~/js/signout-redirect.js" asp-append-version="true"></script>
+    }
+}

@@ -1,0 +1,113 @@
+@model IdentityServer4.SecurityTokenService.Models.Settings.OAuthApplicationViewModel
+@{
+    ViewData["Title"] = "Applications";
+}
+<div class="row">
+    <div class="col-md-4">
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-secondary">Personal settings</li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Profile">Profile</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Account">Account</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Security">Security</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Email">Email</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="ExternalLogins">External Logins</a>
+            </li>
+            <li class="list-group-item list-group-item-action active">
+                <a class="text-white" asp-controller="Settings" asp-action="Applications">Applications</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-8">
+        <h5>Authorized OAuth Apps</h5>
+        <hr/>
+        @if (Model.Applications.Any() == false)
+        {
+            <div class="col-sm-8">
+                <div class="alert alert-info">
+                    You have not given access to any applications
+                </div>
+            </div>
+        }
+        else
+        {
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <td>Logo</td>
+                    <td>ClientName</td>
+                    <td>Time</td>
+                    <td>Identity</td>
+                    <td>Api</td>
+                    <td>Revoke</td>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var grant in Model.Applications)
+                {
+                    <tr>
+                        <td>
+                            @if (grant.ClientLogoUrl != null)
+                            {
+                                <img alt="" src="@grant.ClientLogoUrl">
+                            }
+                        </td>
+                        <td>@grant.ClientName</td>
+                        <td>
+                            <div class="container">
+                                <div class="row">
+                                    <span class="badge badge-pill badge-primary">Created: @grant.Created.ToString("yyyy-MM-dd")</span>
+                                    @if (grant.Expires.HasValue)
+                                    {
+                                        <span class="badge badge-pill badge-primary">Expires: @grant.Expires.Value.ToString("yyyy-MM-dd")</span>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="container">
+                                <div class="row">
+                                    @if (grant.IdentityGrantNames.Any())
+                                    {
+                                        @foreach (var name in grant.IdentityGrantNames)
+                                        {
+                                            <span class="badge badge-pill badge-primary">@name</span>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="container">
+                                <div class="row">
+                                    @if (grant.ApiGrantNames.Any())
+                                    {
+                                        @foreach (var name in grant.ApiGrantNames)
+                                        {
+                                            <span class="badge badge-pill badge-primary">@name</span>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <form asp-controller="Settings" asp-action="Revoke">
+                                <input type="hidden" name="clientId" value="@grant.ClientId">
+                                <button class="btn btn-outline-danger">Revoke</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

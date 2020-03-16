@@ -1,0 +1,174 @@
+@model IdentityServer4.SecurityTokenService.Models.Settings.ProfileViewModel
+@{
+    ViewData["Title"] = "Profile";
+}
+<div class="row">
+    <div class="col-md-4">
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-secondary">Personal settings</li>
+            <li class="list-group-item list-group-item-action active">
+                <a class="text-white" asp-controller="Settings" asp-action="Profile">Profile</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Account">Account</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Security">Security</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Email">Email</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="ExternalLogins">External Logins</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Applications">Applications</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-8">
+        <h5>Public profile</h5>
+        <hr/>
+        <form asp-controller="Settings" asp-action="Profile" method="post">
+            @Html.AntiForgeryToken()
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="GivenName"></label>
+                                <input asp-for="GivenName" class="form-control"/>
+                                <span asp-validation-for="GivenName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FamilyName"></label>
+                                <input asp-for="FamilyName" class="form-control"/>
+                                <span asp-validation-for="FamilyName" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="NickName"></label>
+                                <input asp-for="NickName" class="form-control"/>
+                                <span asp-validation-for="NickName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Telephone"></label>
+                                <input asp-for="Telephone" class="form-control"/>
+                                <span asp-validation-for="Telephone" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Birthday"></label>
+                                <input type="date" asp-for="Birthday" class="form-control"/>
+                                <span asp-validation-for="Birthday" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Sex"></label>
+                                <select asp-for="Sex" class="form-control select2" style="width: 100%;">
+                                    <option value="0">Male</option>
+                                    <option value="1">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Bio"></label>
+                                <textarea asp-for="Bio" class="form-control"></textarea>
+                                <span asp-validation-for="Bio" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Website"></label>
+                                <input asp-for="Website" class="form-control"/>
+                                <span asp-validation-for="Website" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Company"></label>
+                                <input asp-for="Company" class="form-control"/>
+                                <span asp-validation-for="Company" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Location"></label>
+                                <input asp-for="Location" class="form-control"/>
+                                <span asp-validation-for="Location" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="submit" style="margin-top: 10px;" class="btn btn-outline-primary" value="Update profile"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <section></section>
+                    <label>Profile picture</label>
+                    <div title="click to change icon">
+                        <input hidden="hidden" asp-for="Picture"/>
+                        <img id="img-picture" class="rounded border border-light" alt="" width="200" height="200" src="~/@Model.Picture"/>
+                        <input id="btn-upload-picture" accept="image/png, image/jpeg" style="width: 200px; height: 200px; position: absolute; left: 15px; top: 32px; opacity: 0;" type="file"/>
+                    </div>
+                    <span style="font-size: 12px">click to change icon, 请使用 200x200 方形图片</span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script type="text/javascript">
+        $(function () {
+            $('.select2').select2({
+                minimumResultsForSearch: Infinity
+            });
+             $('#btn-upload-picture').on("change", function () {
+                        if (this.files && this.files[0]) {
+                            let reader = new FileReader();
+                            reader.onload = function (e) {
+                                $.ajax({
+                                    url: '/settings/head',
+                                    data: e.target.result,
+                                    headers: {
+                                        RequestVerificationToken: $('input[name$="__RequestVerificationToken"]').val()
+                                    },
+                                    method: 'PUT',
+                                    success: function (result) {
+                                        $('#img-picture').attr('src', '/' + result + '?_=' + Math.round(new Date().getTime()))
+                                    }
+                                });
+                            };
+                            reader.readAsDataURL(this.files[0]);
+                        }
+                    });
+        });
+    </script>
+}

@@ -1,0 +1,20 @@
+@model IdentityServer4.SecurityTokenService.Models.Settings.DisplayRecoveryCodesViewModel
+@{
+    ViewData["Title"] = "Your recovery codes:";
+}
+
+<h4>Here are your new recovery codes</h4>
+<hr/>
+<dl class="dl-horizontal">
+    <dt>Codes:</dt>
+    @foreach (var code in Model.Codes)
+    {
+        <dd>
+            <text>
+
+                @code
+
+            </text>
+        </dd>
+    }
+</dl>

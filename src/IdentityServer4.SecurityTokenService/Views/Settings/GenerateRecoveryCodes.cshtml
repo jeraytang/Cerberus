@@ -1,0 +1,49 @@
+@model IdentityServer4.SecurityTokenService.Models.Settings.GenerateRecoveryCodesViewModel
+<div class="row">
+    <div class="col-md-4">
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-secondary">Personal settings</li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Profile">Profile</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Account">Account</a>
+            </li>
+            <li class="list-group-item list-group-item-action active">
+                <a class="text-white" asp-controller="Settings" asp-action="Security">Security</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Email">Email</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="ExternalLogins">External Logins</a>
+            </li>
+            <li class="list-group-item list-group-item-action">
+                <a asp-controller="Settings" asp-action="Applications">Applications</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-8">
+        <h4>Generate recovery codes</h4>
+        <hr/>
+        <div class="alert alert-warning" role="alert">
+            <p>
+                <span class="glyphicon glyphicon-warning-sign"></span>
+                <strong>Put these codes in a safe place.</strong>
+            </p>
+            <p>
+                If you lose your device and don't have the recovery codes you will lose access to your account.
+            </p>
+            <p>
+                Generating new recovery codes does not change the keys used in authenticator apps. If you wish to change the key
+                used in an authenticator app you should <a asp-controller="Settings" asp-action="ResetAuthenticator">reset your authenticator keys.</a>
+            </p>
+        </div>
+        <div>
+            <form method="post" class="form-group">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-danger" type="submit">Generate Recovery Codes</button>
+            </form>
+        </div>
+    </div>
+</div>

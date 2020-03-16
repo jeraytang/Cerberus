@@ -1,0 +1,390 @@
+@{
+    ViewData["Title"] = "Client";
+}
+
+@section Styles
+{
+    <style type="text/css">
+    .nav-tabs .nav-link {
+        border-top-left-radius: 0;
+        border-top-right-radius:0;
+    }
+    .nav-tabs .nav-link.active {
+        border-top-color: #3c8dbc;
+    }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-8">
+        <h5>
+            Client
+            <small></small>
+        </h5>
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item active">
+                <a class="nav-link active" data-toggle="tab" href="#basic">Basic</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#authentication">Authentication</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#token">Token</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#deviceFlow">DeviceFlow</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+<div class="tab-content container">
+<div id="basic" class="tab-pane active">
+    <br/>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>ClientId</label>
+                <input type="text" v-model="client.clientId" class="form-control"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>ClientName</label>
+                <input type="text" v-model="client.clientName" class="form-control"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>AllowedGrantTypes</label>
+                <select2 style="width: 100%" :options="grantTypes" v-model="client.allowedGrantTypes">
+                </select2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>ProtocolType</label>
+                <select2 style="width: 100%" :options="protocolTypes" v-model="client.protocolType">
+                </select2>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>AllowAccessTokensViaBrowser</label>
+                <select2 style="width: 100%" :options="trueOrFalse" v-model="client.allowAccessTokensViaBrowser">
+                </select2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>RequireClientSecret</label>
+                <select2 style="width: 100%" :options="trueOrFalse" v-model="client.requireClientSecret">
+                </select2>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Scopes</label>
+                <input v-model="client.allowedScopes" type="text" class="form-control"/>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>ClientClaimsPrefix</label>
+                <input v-model="client.clientClaimsPrefix" class="form-control" type="text"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>ClientUri</label>
+                <input v-model="client.clientUri" class="form-control" type="text"/>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>LogoUri</label>
+                <input v-model="client.logoUri" class="form-control" type="text"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>RedirectUris</label>
+                <textarea v-model="client.redirectUris"  type="text" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>PostLogoutRedirectUris</label>
+                <textarea v-model="client.postLogoutRedirectUris"  type="text" class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea v-model="client.description"  type="text" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="authentication" class="tab-pane fade">
+    <br>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>AllowPlainTextPkce</label>
+                <select2 style="width: 100%" :options="trueOrFalse" v-model="client.allowPlainTextPkce">
+                </select2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>AllowOfflineAccess</label>
+                <select2 style="width: 100%" :options="trueOrFalse" v-model="client.allowOfflineAccess">
+                </select2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>RequirePkce</label>
+                <select2 style="width: 100%" :options="trueOrFalse" v-model="client.requirePkce">
+                </select2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>UserSsoLifetime</label>
+                <input v-model="client.userSsoLifetime" type="number" class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>RequireConsent</label>
+                <select2 :options="trueOrFalse" v-model="client.requireConsent" style="width: 100%">
+                </select2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>AllowRememberConsent</label>
+                <select2 :options="trueOrFalse" v-model="client.allowRememberConsent" style="width: 100%">
+                </select2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>ConsentLifetime</label>
+                <input v-model="client.consentLifetime" type="number" class="form-control"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>AlwaysSendClientClaims</label>
+                <select2 :options="trueOrFalse" v-model="client.alwaysSendClientClaims" style="width: 100%">
+                </select2>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>FrontChannelLogoutUri</label>
+                <input v-model="client.frontChannelLogoutUri" type="text" class="form-control"/>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>BackChannelLogoutUri</label>
+                <input v-model="client.backChannelLogoutUri" type="text" class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>BackChannelLogoutSessionRequired</label>
+                <select2 style="width: 100%" :options="trueOrFalse" v-model="client.backChannelLogoutSessionRequired">
+                </select2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>FrontChannelLogoutSessionRequired</label>
+                <select2 style="width: 100%" :options="trueOrFalse" v-model="client.frontChannelLogoutSessionRequired">
+                </select2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>EnableLocalLogin</label>
+                <select2 style="width: 100%" :options="trueOrFalse" v-model="client.enableLocalLogin">
+                </select2>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>AllowedCorsOrigins</label>
+                <textarea v-model="client.allowedCorsOrigins" type="text" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>IdentityProviderRestrictions</label>
+                <textarea v-model="client.identityProviderRestrictions" type="text" class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="token" class="tab-pane fade">
+    <br>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>PairWiseSubjectSalt</label>
+                <input v-model="client.pairWiseSubjectSalt" class="form-control" type="text"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>AccessTokenType</label>
+                <select2 :options="accessTokenTypes" v-model="client.accessTokenType" style="width: 100%">
+                </select2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>AlwaysIncludeUserClaimsInIdToken</label>
+                <select2 :options="trueOrFalse" v-model="client.alwaysIncludeUserClaimsInIdToken" style="width: 100%">
+                </select2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>IdentityTokenLifetime</label>
+                <input v-model="client.identityTokenLifetime" class="form-control" type="number"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>AccessTokenLifetime</label>
+                <input v-model="client.accessTokenLifetime" class="form-control" type="number"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>RefreshTokenUsage</label>
+                <select2 :options="refreshTokenExpirations" v-model="client.refreshTokenUsage" style="width: 100%">
+                </select2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>IncludeJwtId</label>
+                <select2 :options="trueOrFalse" v-model="client.includeJwtId" style="width: 100%">
+                </select2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>AuthorizationCodeLifetime</label>
+                <input v-model="client.authorizationCodeLifetime" class="form-control" type="number"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>AbsoluteRefreshTokenLifetime</label>
+                <input v-model="client.absoluteRefreshTokenLifetime" class="form-control" type="number"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>SlidingRefreshTokenLifetime</label>
+                <input v-model="client.slidingRefreshTokenLifetime" class="form-control" type="number"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>RefreshTokenUsage</label>
+                <select2 :options="refreshTokenUsages" v-model="client.refreshTokenUsage" style="width: 100%">
+                </select2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>UpdateAccessTokenClaimsOnRefresh</label>
+                <select2 :options="trueOrFalse" v-model="client.updateAccessTokenClaimsOnRefresh" style="width: 100%">
+                </select2>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="deviceFlow" class="tab-pane fade">
+    <br>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>UserCodeType</label>
+                <input v-model="client.userCodeType" class="form-control" type="text"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>DeviceCodeLifetime</label>
+                <input v-model="client.deviceCodeLifetime" class="form-control" type="number"/>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- Tab panes -->
+        <button class="btn btn-outline-primary" v-on:click="save">Save</button>
+    </div>
+</div>
+
+@section Scripts
+{
+    <environment names="Development">
+        <script src="~/js/editClient.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/editClient.min.js" asp-append-version="true"></script>
+    </environment>
+}

@@ -1,0 +1,219 @@
+@{
+    ViewData["Title"] = "ApiResourceScopes";
+}
+
+@section Styles
+{
+    <style>
+        .modal-header, .modal-footer{
+            border: 0;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-8">
+        <h5>
+            ApiResource scopes:
+            <small v-text="resource.displayName"></small>
+        </h5>
+    </div>
+    <div class="col-sm-4">
+        <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#addModal">Add</button>
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered" style="width: 100%">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>DisplayName</th>
+                <th>Description</th>
+                <th>UserClaims</th>
+                <th>Required</th>
+                <th>ShowInDiscoveryDocument</th>
+                <th style="width: 125px">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-if="scopes.length===0">
+                <td colspan="7">None</td>
+            </tr>
+            <tr :id="scope.id" v-else v-for="scope in scopes">
+                <td v-text="scope.name"></td>
+                <td v-text="scope.displayName"></td>
+                <td v-text="scope.description"></td>
+                <td v-text="scope.userClaims"></td>
+                <td v-text="scope.required"></td>
+                <td v-text="scope.showInDiscoveryDocument"></td>
+                <td>
+                    <button class="btn btn-outline-primary" data-toggle="modal" data-target="#viewModal"><i class="fa fa-fw fa-edit"></i></button>
+                    <button class="btn btn-outline-primary" v-on:click="remove"><i class="fa fa-fw fa-trash"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="addModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add scope</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" v-model="newScope.name" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>DisplayName</label>
+                            <input type="text" v-model="newScope.displayName" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea type="text" v-model="newScope.description" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>User Claims</label>
+                            <textarea v-model="newScope.userClaims" type="text" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>ShowInDiscoveryDocument</label>
+                            <select2 style="width: 100%" :options="trueOrFalse" v-model="newScope.showInDiscoveryDocument">
+                            </select2>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Emphasize</label>
+                            <select2 style="width: 100%" :options="trueOrFalse" v-model="newScope.emphasize">
+                            </select2>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Required</label>
+                            <select2 style="width: 100%" :options="trueOrFalse" v-model="newScope.required">
+                            </select2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button type="button" v-on:click="submit" class="btn btn-outline-primary">Submit</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="viewModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">Update scope</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" v-model="originScope.name" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>DisplayName</label>
+                            <input type="text" v-model="originScope.displayName" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea type="text" v-model="originScope.description" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>User Claims</label>
+                            <textarea v-model="originScope.userClaims" type="text" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>ShowInDiscoveryDocument</label>
+                            <select2 style="width: 100%" :options="trueOrFalse" v-model="originScope.showInDiscoveryDocument">
+                            </select2>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Emphasize</label>
+                            <select2 style="width: 100%" :options="trueOrFalse" v-model="originScope.emphasize">
+                            </select2>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Required</label>
+                            <select2 style="width: 100%" :options="trueOrFalse" v-model="originScope.required">
+                            </select2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button type="button" v-on:click="update" class="btn btn-outline-primary">Submit</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <environment names="Development">
+        <script src="~/js/apiResourceScopes.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/apiResourceScopes.min.js" asp-append-version="true"></script>
+    </environment>
+}

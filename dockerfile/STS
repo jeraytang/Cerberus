@@ -1,0 +1,14 @@
+# First stage of multi-stage build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+WORKDIR /sts
+# copy the contents of agent working directory on host to workdir in container
+COPY . ./
+
+# dotnet commands to build, test, and publish
+RUN dotnet publish src/IdentityServer4.SecurityTokenService/IdentityServer4.SecurityTokenService.csproj -c Release -o output
+
+# Second stage - Build runtime image
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+WORKDIR /sts
+COPY --from=build-env /sts/output/ .
+ENTRYPOINT ["dotnet", "SecurityTokenService.dll"]

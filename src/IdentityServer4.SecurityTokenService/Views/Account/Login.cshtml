@@ -1,0 +1,99 @@
+@using IdentityServer4.SecurityTokenService.Common
+@model IdentityServer4.SecurityTokenService.Models.Account.LoginViewModel
+@inject STSOptions STSOptions
+@{
+    ViewData["Title"] = "Log in";
+}
+<h1>Login</h1>
+<hr/>
+<div class="row">
+    @if (Model.EnableLocalLogin)
+    {
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Local Login
+                </div>
+                <div class="card-body">
+                    <partial name="_ValidationSummary"/>
+                    <form method="post">
+                        <div class="form-group">
+                            <label asp-for="@Model.Username"></label>
+                            <input asp-for="@Model.Username" class="form-control"/>
+                            <span asp-validation-for="@Model.Username" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Password"></label>
+                            <input type="password" asp-for="@Model.Password" class="form-control"/>
+                            <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                        </div>
+                        @if (Model.AllowRememberLogin)
+                        {
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label asp-for="@Model.RememberLogin">
+                                        <input asp-for="@Model.RememberLogin"/>
+                                        @(Html.DisplayNameFor(model => model.RememberLogin))
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                        <div class="form-group">
+                            <button class="btn btn-outline-primary" name="button" value="login">Login</button>
+                            <button class="btn btn-outline-primary" name="button" value="cancel">Cancel</button>
+                        </div>
+                        <div class="form-group">
+                            <p>
+                                <a asp-controller="Account" asp-action="ForgotPassword">Forgot your password?</a>
+                            </p>
+                            @if (STSOptions.OpenRegister)
+                            {
+                                <p>
+                                    <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                                </p>
+                            }
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            @{
+                <h4>Use another service to log in.</h4>
+                <hr/>
+                if (!Model.VisibleExternalProviders.Any())
+                {
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                            for details on setting up this ASP.NET application to support logging in via external services.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                        @foreach (var provider in Model.VisibleExternalProviders)
+                        {
+                            <button type="submit" class="btn btn-outline-primary" name="provider" value="@provider.Name" title="Log in using your @provider.Name account"> @provider.DisplayName</button>
+                        }
+                    </form>
+                }
+            }
+            @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
+            {
+                <div class="alert alert-warning">
+                    <strong>Invalid login request</strong>
+                    There are no login schemes configured for this client.
+                </div>
+            }
+        </section>
+    </div>
+
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

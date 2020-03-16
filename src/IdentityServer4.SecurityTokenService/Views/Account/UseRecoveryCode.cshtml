@@ -1,0 +1,26 @@
+@model IdentityServer4.SecurityTokenService.Models.Account.UseRecoveryCodeViewModel
+@{
+    ViewData["Title"] = "Use recovery code";
+}
+
+<h4>Use recovery code.</h4>
+<hr/>
+<form asp-controller="Account" asp-action="UseRecoveryCode" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+    @(await Html.PartialAsync("_ValidationSummary"))
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="Code" class="control-label"></label>
+            <textarea style="height: 300px" asp-for="Code" class="form-control"></textarea>
+            <span asp-validation-for="Code" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-offset-2 col-md-6">
+        <div class="form-group">
+            <button type="submit" class="btn btn-outline-primary">Submit</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

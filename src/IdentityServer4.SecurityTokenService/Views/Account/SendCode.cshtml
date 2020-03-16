@@ -1,0 +1,36 @@
+@model IdentityServer4.SecurityTokenService.Models.Account.SendCodeViewModel
+@{
+    ViewData["Title"] = "Send Verification Code";
+}
+
+<h4>Send Verification Code.</h4>
+<hr/>
+<form asp-controller="Account" asp-action="SendCode" asp-route-returnurl="@Model.ReturnUrl" method="post" class="form-horizontal" role="form">
+    <input asp-for="RememberMe" type="hidden"/>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Select Two-Factor Authentication Provider</label>
+                <select class="form-control select2" asp-for="SelectedProvider" asp-items="Model.Providers"></select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <button type="submit" class="btn btn-outline-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script type="text/javascript">
+            $(function () {
+                $('.select2').select2({
+                    minimumResultsForSearch: Infinity
+                });
+            });
+    </script>
+}
