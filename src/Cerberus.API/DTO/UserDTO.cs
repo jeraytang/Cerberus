@@ -9,7 +9,7 @@ namespace Cerberus.API.DTO
         /// <summary>
         /// 用户名
         /// </summary>
-        [StringLength(25)]
+        [StringLength(36)]
         [Required]
         public string UserName { get; set; }
 
@@ -108,5 +108,10 @@ namespace Cerberus.API.DTO
         /// </summary>
         [StringLength(20)]
         public string Source { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool Enabled { get; set; }
     }
 }

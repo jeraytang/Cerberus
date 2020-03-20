@@ -24,13 +24,13 @@
     <div class="col-md-8">
         <div class="form-inline">
             <input style="width: 240px" type="text" class="form-control" v-model="keyword"/>
-            <button style="margin-left: 15px" class="btn btn-outline-primary" v-on:click="search">
+            <button style="margin-left: 15px" class="btn btn-sm btn-outline-primary" v-on:click="search">
                 <i class="fa fa-fw fa-search"></i>
             </button>
         </div>
     </div>
     <div class="col-md-4">
-        <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#addModal">Add</button>
+        <button class="btn btn-sm btn-outline-primary float-right" data-toggle="modal" data-target="#addModal">Add</button>
     </div>
 </div>
 <br/>
@@ -39,11 +39,11 @@
         <table class="table table-bordered" style="width: 100%">
             <thead>
             <tr>
-                <th></th>
-                <th style="width: 160px">UserName</th>
+                <th style="width: 5px"></th>
+                <th style="width: 350px">UserName</th>
                 <th>Email</th>
                 <th>Name</th>
-                <th>PhoneNumber</th>
+                <th style="width: 160px">PhoneNumber</th>
                 <th>Source</th>
                 <th style="width: 275px">Action</th>
             </tr>
@@ -57,28 +57,28 @@
                 <td v-else class="badge-warning"></td>
                 <td v-text="item.userName"></td>
                 <td v-text="item.email"></td>
-                <td v-text="item.name"></td>
+                <td v-text="item.familyName + item.givenName"></td>
                 <td v-text="item.phoneNumber"></td>
                 <td v-text="item.source"></td>
                 <td v-if="item.userName === 'admin'">
                 </td>
                 <td v-else>
-                    <button title="Edit user" class="btn btn-outline-primary" data-toggle="modal" data-target="#viewModal">
+                    <button title="Edit user" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#viewModal">
                         <i class="fa fa-fw fa-edit"></i>
                     </button>
-                    <a title="Edit roles" class="btn btn-outline-primary" :href="'/users/' + item.id + '/roles'">
+                    <a title="Edit roles" class="btn btn-sm btn-outline-primary" :href="'/users/' + item.id + '/roles'">
                         <i class="fa fa-fw fa-user-circle"></i>
                     </a>
-                    <a title="Edit permission" class="btn btn-outline-primary" :href="'/users/' + item.id + '/permissions'">
+                    <a title="Edit permission" class="btn btn-sm btn-outline-primary" :href="'/users/' + item.id + '/permissions'">
                         <i class="fa fa-fw fa-cog"></i>
                     </a>
-                    <button title="Disable user" v-if="item.enabled" class="btn btn-outline-primary" v-on:click="disable">
+                    <button title="Disable user" v-if="item.enabled" class="btn btn-sm btn-outline-primary" v-on:click="disable">
                         <i class="fa fa-fw fa-lock"></i>
                     </button>
-                    <button title="Enable user" v-else class="btn btn-outline-primary" v-on:click="enable">
+                    <button title="Enable user" v-else class="btn btn-sm btn-outline-primary" v-on:click="enable">
                         <i class="fa fa-fw fa-unlock"></i>
                     </button>
-                    <button title="Remove user" class="btn btn-outline-primary" v-on:click="remove">
+                    <button title="Remove user" class="btn btn-sm btn-outline-primary" v-on:click="remove">
                         <i class="fa fa-fw fa-trash"></i>
                     </button>
                 </td>
@@ -125,8 +125,8 @@
             </div>
             <!-- 模态框底部 -->
             <div class="modal-footer">
-                <button type="button" v-on:click="submit" class="btn btn-outline-primary">Submit</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" v-on:click="submit" class="btn btn-sm btn-outline-primary">Submit</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
@@ -266,8 +266,8 @@
             </div>
             <!-- 模态框底部 -->
             <div class="modal-footer">
-                <button type="button" v-on:click="update" class="btn btn-outline-primary">Submit</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" v-on:click="update" class="btn btn-sm btn-outline-primary">Submit</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
             </div>
 
         </div>

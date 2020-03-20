@@ -3,7 +3,7 @@ $(function () {
         el: '#app',
         data: {
             page: 1,
-            limit: 15,
+            limit: 10,
             count: 0,
             sex: [
                 {id: 'Unknown', text: 'Unknown'},

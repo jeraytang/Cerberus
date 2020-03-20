@@ -89,6 +89,28 @@
     "sourceMap": false
   },
   {
+    "outputFileName": "wwwroot/js/apiResourceScopes.min.js",
+    "inputFiles": [
+      "wwwroot/js/apiResourceScopes.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/apiResourceSecrets.min.js",
+    "inputFiles": [
+      "wwwroot/js/apiResourceSecrets.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
       "wwwroot/js/site.js"

@@ -20,6 +20,10 @@ function handleSuccess(result, success, error) {
 }
 
 function handleError(result, error) {
+    if (result.status === 401) {
+        window.location.href = '/Account/Logout';
+        return
+    }
     if (error) {
         if (result.responseJSON) {
             error(result.responseJSON);

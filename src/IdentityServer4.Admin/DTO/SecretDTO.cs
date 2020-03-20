@@ -14,7 +14,7 @@ namespace IdentityServer4.Admin.DTO
 		/// The description.
 		/// </value>
 		[Required]
-		[StringLength(32)]
+		[StringLength(100)]
 		public string Description { get; set; }
 
 		/// <summary>
@@ -24,7 +24,7 @@ namespace IdentityServer4.Admin.DTO
 		/// The value.
 		/// </value>
 		[Required]
-		[StringLength(32)]
+		[StringLength(36)]
 		public string Value { get; set; }
 
 		/// <summary>

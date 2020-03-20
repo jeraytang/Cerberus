@@ -25,6 +25,7 @@ ProjectSection(SolutionItems) = preProject
 	build_cerberus_api_image.sh = build_cerberus_api_image.sh
 	publish.sh = publish.sh
 	nuget.config = nuget.config
+	publish_private.sh = publish_private.sh
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.Admin", "src\IdentityServer4.Admin\IdentityServer4.Admin.csproj", "{B183A3DC-D25C-4BCF-8832-F5C5BA20D3E8}"

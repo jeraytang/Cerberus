@@ -24,13 +24,13 @@
     <div class="col-md-8">
         <div class="form-inline">
             <input style="width: 240px" type="text" class="form-control" v-model="keyword"/>
-            <button style="margin-left: 15px" class="btn btn-outline-primary" v-on:click="search">
+            <button style="margin-left: 15px" class="btn btn-sm btn-outline-primary" v-on:click="search">
                 <i class="fa fa-fw fa-search"></i>
             </button>
         </div>
     </div>
     <div class="col-md-4">
-        <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#addModal">Add</button>
+        <button class="btn btn-sm btn-outline-primary float-right" data-toggle="modal" data-target="#addModal">Add</button>
     </div>
 </div>
 <br/>
@@ -56,9 +56,9 @@
                 <td v-if="item.name === 'cerberus-admin' || item.name === 'admin' || item.name === 'tenant-admin'">
                 </td>
                 <td v-else>
-                    <button title="Edit role" class="btn btn-outline-primary" data-toggle="modal" data-target="#viewModal"><i class="fa fa-fw fa-edit"></i></button>
-                    <a title="Edit permissions" class="btn btn-outline-primary" :href="'/roles/' + item.id + '/permissions'"><i class="fa fa-fw fa-cog"></i></a>
-                    <button title="Remove role" class="btn btn-outline-primary" v-on:click="remove"><i class="fa fa-fw fa-trash"></i></button>
+                    <button title="Edit role" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#viewModal"><i class="fa fa-fw fa-edit"></i></button>
+                    <a title="Edit permissions" class="btn btn-sm btn-outline-primary" :href="'/roles/' + item.id + '/permissions'"><i class="fa fa-fw fa-cog"></i></a>
+                    <button title="Remove role" class="btn btn-sm btn-outline-primary" v-on:click="remove"><i class="fa fa-fw fa-trash"></i></button>
                 </td>
             </tr>
             </tbody>
@@ -106,8 +106,8 @@
             </div>
             <!-- 模态框底部 -->
             <div class="modal-footer">
-                <button type="button" v-on:click="submit" class="btn btn-outline-primary">Submit</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" v-on:click="submit" class="btn btn-sm btn-outline-primary">Submit</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
@@ -148,8 +148,8 @@
             </div>
             <!-- 模态框底部 -->
             <div class="modal-footer">
-                <button type="button" v-on:click="update" class="btn btn-outline-primary">Submit</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" v-on:click="update" class="btn btn-sm btn-outline-primary">Submit</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>

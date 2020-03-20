@@ -19,7 +19,7 @@
         </h5>
     </div>
     <div class="col-sm-4">
-        <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#addModal">Add</button>
+        <button class="btn btn-sm btn-outline-primary float-right" data-toggle="modal" data-target="#addModal">Add</button>
     </div>
 </div>
 <br/>
@@ -28,7 +28,7 @@
         <table class="table table-bordered" style="width: 100%">
             <thead>
             <tr>
-                <th style="width: 25px;"></th>
+                <th style="width: 5px"></th>
                 <th>ClientId</th>
                 <th>ClientName</th>
                 <th>GrantType</th>
@@ -50,12 +50,12 @@
                 <td v-text="client.scopes"></td>
                 <td v-text="client.redirectUris"></td>
                 <td>
-                    <a title="edit" class="btn btn-outline-primary" :href="'/clients/' + client.id"><i class="fa fa-fw fa-edit"></i></a>
-                    @* <a class="btn btn-outline-primary" :href="'/clients/' + client.id + '/claims'">Claims</a> *@
-                    <a title="secrets" class="btn btn-outline-primary" :href="'/clients/' + client.id + '/secrets'"><i class="fa fa-fw fa-user-secret"></i></a>
-                    <button title="disable" v-if="client.enabled" class="btn btn-outline-primary" v-on:click="disable"><i class="fa fa-fw fa-lock"></i></button>
-                    <button title="enable" v-else class="btn btn-outline-primary" v-on:click="enable"><i class="fa fa-fw fa-unlock"></i></button>
-                    <button title="remove" class="btn btn-outline-primary" v-on:click="remove"> <i class="fa fa-fw fa-trash"></i></button>
+                    <a title="edit" class="btn btn-sm btn-outline-primary" :href="'/clients/' + client.id"><i class="fa fa-fw fa-edit"></i></a>
+                    @* <a class="btn btn-sm btn-outline-primary" :href="'/clients/' + client.id + '/claims'">Claims</a> *@
+                    <a title="secrets" class="btn btn-sm btn-outline-primary" :href="'/clients/' + client.id + '/secrets'"><i class="fa fa-fw fa-user-secret"></i></a>
+                    <button title="disable" v-if="client.enabled" class="btn btn-sm btn-outline-primary" v-on:click="disable"><i class="fa fa-fw fa-lock"></i></button>
+                    <button title="enable" v-else class="btn btn-sm btn-outline-primary" v-on:click="enable"><i class="fa fa-fw fa-unlock"></i></button>
+                    <button title="remove" class="btn btn-sm btn-outline-primary" v-on:click="remove"> <i class="fa fa-fw fa-trash"></i></button>
                 </td>
             </tr>
             </tbody>
@@ -118,8 +118,8 @@
 
             <!-- 模态框底部 -->
             <div class="modal-footer">
-                <button type="button" v-on:click="submit" class="btn btn-outline-primary">Submit</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" v-on:click="submit" class="btn btn-sm btn-outline-primary">Submit</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
             </div>
 
         </div>

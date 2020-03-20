@@ -67,11 +67,11 @@
             }
             <br/>
             <div class="consent-buttons">
-                <button name="button" value="yes" class="btn btn-outline-primary" autofocus>Yes, Allow</button>
-                <button name="button" value="no" class="btn btn-outline-danger">No, Do Not Allow</button>
+                <button name="button" value="yes" class="btn btn-sm btn-outline-primary" autofocus>Yes, Allow</button>
+                <button name="button" value="no" class="btn btn-sm btn-outline-danger">No, Do Not Allow</button>
                 @if (Model.ClientUrl != null)
                 {
-                    <a class="pull-right btn btn-outline-primary" target="_blank" href="@Model.ClientUrl">
+                    <a class="pull-right btn btn-sm btn-outline-primary" target="_blank" href="@Model.ClientUrl">
                         <span class="glyphicon glyphicon-info-sign"></span>
                         <strong>@Model.ClientName</strong>
                     </a>

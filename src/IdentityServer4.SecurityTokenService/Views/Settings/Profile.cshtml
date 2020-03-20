@@ -3,7 +3,7 @@
     ViewData["Title"] = "Profile";
 }
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <ul class="list-group">
             <li class="list-group-item list-group-item-secondary">Personal settings</li>
             <li class="list-group-item list-group-item-action active">
@@ -26,7 +26,7 @@
             </li>
         </ul>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-9">
         <h5>Public profile</h5>
         <hr/>
         <form asp-controller="Settings" asp-action="Profile" method="post">
@@ -122,7 +122,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <input type="submit" style="margin-top: 10px;" class="btn btn-outline-primary" value="Update profile"/>
+                                <input type="submit" style="margin-top: 10px;" class="btn btn-sm btn-outline-primary" value="Update profile"/>
                             </div>
                         </div>
                     </div>

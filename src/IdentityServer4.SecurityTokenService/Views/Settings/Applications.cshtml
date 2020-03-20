@@ -3,7 +3,7 @@
     ViewData["Title"] = "Applications";
 }
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <ul class="list-group">
             <li class="list-group-item list-group-item-secondary">Personal settings</li>
             <li class="list-group-item list-group-item-action">
@@ -26,7 +26,7 @@
             </li>
         </ul>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-9">
         <h5>Authorized OAuth Apps</h5>
         <hr/>
         @if (Model.Applications.Any() == false)
@@ -79,7 +79,7 @@
                                     {
                                         @foreach (var name in grant.IdentityGrantNames)
                                         {
-                                            <span class="badge badge-pill badge-primary">@name</span>
+                                            <span class="badge badge-pill badge-primary" style="margin-left: 5px; margin-bottom: 5px">@name</span>
                                         }
                                     }
                                 </div>
@@ -101,7 +101,7 @@
                         <td>
                             <form asp-controller="Settings" asp-action="Revoke">
                                 <input type="hidden" name="clientId" value="@grant.ClientId">
-                                <button class="btn btn-outline-danger">Revoke</button>
+                                <button class="btn btn-sm btn-outline-danger">Revoke</button>
                             </form>
                         </td>
                     </tr>

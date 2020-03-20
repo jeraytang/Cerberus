@@ -3,7 +3,7 @@
     ViewData["Title"] = "Account";
 }
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <ul class="list-group">
             <li class="list-group-item list-group-item-secondary">Personal settings</li>
             <li class="list-group-item list-group-item-action">
@@ -26,7 +26,7 @@
             </li>
         </ul>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-9">
         @(await Html.PartialAsync("ChangeUserName"))
         <h5>Export account data</h5>
         <hr/>
@@ -34,7 +34,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <p>Export all repositories and profile metadata for @Context.User.GetDisplayName(). Exports will be available for 7 days.</p>
-                    <a asp-controller="Settings" asp-action="PersonalData" class="btn btn-outline-primary" value="Update profile">Start export</a>
+                    <a asp-controller="Settings" asp-action="PersonalData" class="btn btn-sm btn-outline-primary" value="Update profile">Start export</a>
                 </div>
             </div>
         </div>

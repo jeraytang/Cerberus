@@ -174,7 +174,7 @@ namespace Cerberus.API.Controllers
 
                     servicePermissionsDto.Groups.Add(groupPermission);
                 }
-                
+
                 result.Services.Add(servicePermissionsDto);
             }
 
@@ -244,7 +244,7 @@ namespace Cerberus.API.Controllers
             var result = new UserRolesDTO
             {
                 UserName = entity.UserName,
-                Name = $"{givenName}{familyName}",
+                Name = $"{familyName}{givenName}",
                 Email = entity.Email,
                 Groups = new List<GroupRoleDTO>()
             };
@@ -377,19 +377,21 @@ namespace Cerberus.API.Controllers
             };
             foreach (var user in result.Data)
             {
+                var familyName = user.UserClaims.FirstOrDefault(x => x.ClaimType == JwtRegisteredClaimNames.FamilyName);
+                var givenName = user.UserClaims.FirstOrDefault(x => x.ClaimType == JwtRegisteredClaimNames.GivenName);
+                var title = user.UserClaims.FirstOrDefault(x => x.ClaimType == "title");
+                var company = user.UserClaims.FirstOrDefault(x => x.ClaimType == "company");
                 output.Data.Add(new ListUserDTO
                 {
                     Id = user.Id,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
                     Source = user.Source,
-                    FamilyName = user.UserClaims.FirstOrDefault(x => x.ClaimType == JwtRegisteredClaimNames.FamilyName)
-                        ?.ClaimValue,
-                    GivenName = user.UserClaims.FirstOrDefault(x => x.ClaimType == JwtRegisteredClaimNames.GivenName)
-                        ?.ClaimValue,
+                    FamilyName = familyName == null ? string.Empty : familyName.ClaimValue,
+                    GivenName = givenName == null ? string.Empty : givenName.ClaimValue,
                     UserName = user.UserName,
-                    Title = user.UserClaims.FirstOrDefault(x => x.ClaimType == "title")?.ClaimValue,
-                    Company = user.UserClaims.FirstOrDefault(x => x.ClaimType == "company")?.ClaimValue,
+                    Title = title == null ? string.Empty : title.ClaimValue,
+                    Company = company == null ? string.Empty : company.ClaimValue,
                     Enabled = user.Enabled
                 });
             }
@@ -472,7 +474,8 @@ namespace Cerberus.API.Controllers
                 Company = claims.FirstOrDefault(x => x.Type == "company")?.Value,
                 Location = claims.FirstOrDefault(x => x.Type == "location")?.Value,
                 Sex = string.IsNullOrWhiteSpace(sex) ? "Unknown" : sex,
-                Source = entity.Source
+                Source = entity.Source,
+                Enabled = entity.Enabled
             };
             var birthday = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Birthdate)?.Value;
             if (!string.IsNullOrWhiteSpace(birthday))
