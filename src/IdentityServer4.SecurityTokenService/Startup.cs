@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using IdentityServer4.AspNetIdentity;
 using IdentityServer4.SecurityTokenService.Extensions;
@@ -8,6 +9,7 @@ using IdentityServer4.SecurityTokenService.Endpoints;
 using IdentityServer4.SecurityTokenService.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -52,12 +54,21 @@ namespace IdentityServer4.SecurityTokenService
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<IdentityDbContext>();
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = ".sts";
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                options.LoginPath = "/Account/Login";
+                options.SlidingExpiration = true;
+            });
+
             services.AddIdentityServer()
                 .AddMySqlStoreCache()
                 .AddProfileService<ProfileService<IdentityUser>>()
                 .AddAspNetIdentity<IdentityUser>()
                 .AddDeveloperSigningCredential();
-
+            services.AddAntiforgery(x => { x.Cookie.Name = ".sts.antiforgery"; });
             services.AddAuthentication()
                 .AddGoogle("Google", options =>
                 {
@@ -81,7 +92,6 @@ namespace IdentityServer4.SecurityTokenService
                         NameClaimType = "name", RoleClaimType = "role"
                     };
                 });
-
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();
             services.AddRouting(options => options.LowercaseUrls = true);
@@ -108,6 +118,11 @@ namespace IdentityServer4.SecurityTokenService
             }
 
             // app.UseHttpsRedirection();
+
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Lax
+            });
 
             app.UseStaticFiles();
 

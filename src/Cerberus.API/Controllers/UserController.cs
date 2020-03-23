@@ -445,7 +445,6 @@ namespace Cerberus.API.Controllers
         }
 
         [HttpGet("{userId}")]
-        [Authorize(Roles = "cerberus-admin,admin")]
         public async Task<UserDTO> GetAsync(string userId)
         {
             var entity = await _userManager.FindByIdAsync(userId);

@@ -99,7 +99,7 @@ namespace Cerberus.API.Extensions
                     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
                     if (!string.IsNullOrWhiteSpace(options.AdminEmail))
                     {
-                        var user = await userManager.Users.FirstOrDefaultAsync(x => x.UserName == options.AdminEmail);
+                        var user = await userManager.Users.FirstOrDefaultAsync(x => x.Email == options.AdminEmail);
                         if (user == null)
                         {
                             user = new User {UserName = "admin", Email = options.AdminEmail, EmailConfirmed = true};
@@ -113,12 +113,12 @@ namespace Cerberus.API.Extensions
                                 throw new Exception(string.Join(", ",
                                     identityResult.Errors.Select(x => x.Description)));
                             }
-                        }
 
-                        var roles = await userManager.GetRolesAsync(user);
-                        if (!roles.Contains("cerberus-admin"))
-                        {
-                            await userManager.AddToRoleAsync(user, "cerberus-admin");
+                            var roles = await userManager.GetRolesAsync(user);
+                            if (!roles.Contains("cerberus-admin"))
+                            {
+                                await userManager.AddToRoleAsync(user, "cerberus-admin");
+                            }
                         }
                     }
 

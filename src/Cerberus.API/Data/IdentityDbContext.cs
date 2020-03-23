@@ -71,7 +71,7 @@ namespace Cerberus.API.Data
 
                 b.HasIndex(x => x.LastModificationTime);
                 b.HasIndex(x => x.CreationTime);
-                b.HasMany<RolePermission>().WithOne().HasForeignKey(x => x.RoleId).IsRequired();
+                // b.HasMany<RolePermission>().WithOne().HasForeignKey(x => x.RoleId).IsRequired();
             });
 
             builder.Entity<Service>(b =>

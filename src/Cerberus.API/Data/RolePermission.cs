@@ -8,24 +8,24 @@ namespace Cerberus.API.Data
 		/// <summary>
 		///
 		/// </summary>
-		[StringLength(40)]
+		[StringLength(36)]
 		public string RoleId { get; private set; }
 
-		/// <summary>
-		/// 角色
-		/// </summary>
-		public virtual Role Role { get; private set; }
+		// /// <summary>
+		// /// 角色
+		// /// </summary>
+		// public virtual Role Role { get; private set; }
 
 		/// <summary>
 		///
 		/// </summary>
-		[StringLength(40)]
+		[StringLength(36)]
 		public string PermissionId { get; private set; }
 
-		/// <summary>
-		/// 权限
-		/// </summary>
-		public virtual Permission Permission { get; private set; }
+		// /// <summary>
+		// /// 权限
+		// /// </summary>
+		// public virtual Permission Permission { get; private set; }
 
 		private RolePermission()
 		{
