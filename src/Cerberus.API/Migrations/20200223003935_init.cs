@@ -31,6 +31,18 @@ namespace Cerberus.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RolePermission",
+                columns: table => new
+                {
+                    RoleId = table.Column<string>(maxLength: 36, nullable: false),
+                    PermissionId = table.Column<string>(maxLength: 36, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RolePermission", x => new { x.PermissionId, x.RoleId });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Service",
                 columns: table => new
                 {
@@ -84,6 +96,18 @@ namespace Cerberus.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserPermission",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(maxLength: 36, nullable: false),
+                    PermissionId = table.Column<string>(maxLength: 36, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPermission", x => new { x.PermissionId, x.UserId });
                 });
 
             migrationBuilder.CreateTable(
@@ -222,60 +246,15 @@ namespace Cerberus.API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "RolePermission",
-                columns: table => new
-                {
-                    RoleId = table.Column<string>(maxLength: 40, nullable: false),
-                    PermissionId = table.Column<string>(maxLength: 40, nullable: false),
-                    RoleId1 = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RolePermission", x => new { x.PermissionId, x.RoleId });
-                    table.ForeignKey(
-                        name: "FK_RolePermission_Permission_PermissionId",
-                        column: x => x.PermissionId,
-                        principalTable: "Permission",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RolePermission_Role_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Role",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RolePermission_Role_RoleId1",
-                        column: x => x.RoleId1,
-                        principalTable: "Role",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+            migrationBuilder.CreateIndex(
+                name: "IX_Permission_CreationTime",
+                table: "Permission",
+                column: "CreationTime");
 
-            migrationBuilder.CreateTable(
-                name: "UserPermission",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(maxLength: 40, nullable: false),
-                    PermissionId = table.Column<string>(maxLength: 40, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserPermission", x => new { x.PermissionId, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_UserPermission_Permission_PermissionId",
-                        column: x => x.PermissionId,
-                        principalTable: "Permission",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserPermission_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            migrationBuilder.CreateIndex(
+                name: "IX_Permission_LastModificationTime",
+                table: "Permission",
+                column: "LastModificationTime");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Permission_ServiceId",
@@ -289,6 +268,16 @@ namespace Cerberus.API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Role_CreationTime",
+                table: "Role",
+                column: "CreationTime");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Role_LastModificationTime",
+                table: "Role",
+                column: "LastModificationTime");
+
+            migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "Role",
                 column: "NormalizedName",
@@ -300,20 +289,35 @@ namespace Cerberus.API.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RolePermission_RoleId",
-                table: "RolePermission",
-                column: "RoleId");
+                name: "IX_Service_CreationTime",
+                table: "Service",
+                column: "CreationTime");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RolePermission_RoleId1",
-                table: "RolePermission",
-                column: "RoleId1");
+                name: "IX_Service_LastModificationTime",
+                table: "Service",
+                column: "LastModificationTime");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Service_Name",
                 table: "Service",
                 column: "Name",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_CreationTime",
+                table: "User",
+                column: "CreationTime");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Email",
+                table: "User",
+                column: "Email");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_LastModificationTime",
+                table: "User",
+                column: "LastModificationTime");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -332,6 +336,11 @@ namespace Cerberus.API.Migrations
                 column: "PhoneNumber");
 
             migrationBuilder.CreateIndex(
+                name: "IX_User_Source",
+                table: "User",
+                column: "Source");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserClaim_UserId",
                 table: "UserClaim",
                 column: "UserId");
@@ -342,11 +351,6 @@ namespace Cerberus.API.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserPermission_UserId",
-                table: "UserPermission",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserRole_RoleId",
                 table: "UserRole",
                 column: "RoleId");
@@ -354,6 +358,9 @@ namespace Cerberus.API.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Permission");
+
             migrationBuilder.DropTable(
                 name: "RoleClaim");
 
@@ -376,16 +383,13 @@ namespace Cerberus.API.Migrations
                 name: "UserToken");
 
             migrationBuilder.DropTable(
-                name: "Permission");
+                name: "Service");
 
             migrationBuilder.DropTable(
                 name: "Role");
 
             migrationBuilder.DropTable(
                 name: "User");
-
-            migrationBuilder.DropTable(
-                name: "Service");
         }
     }
 }

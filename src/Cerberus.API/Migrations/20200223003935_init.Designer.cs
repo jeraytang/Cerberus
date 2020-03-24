@@ -16,7 +16,7 @@ namespace Cerberus.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.1")
+                .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Cerberus.API.Data.Permission", b =>
@@ -78,6 +78,10 @@ namespace Cerberus.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreationTime");
+
+                    b.HasIndex("LastModificationTime");
+
                     b.HasIndex("ServiceId");
 
                     b.HasIndex("ServiceId", "Identification")
@@ -137,6 +141,10 @@ namespace Cerberus.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreationTime");
+
+                    b.HasIndex("LastModificationTime");
+
                     b.HasIndex("NormalizedName")
                         .IsUnique()
                         .HasName("RoleNameIndex");
@@ -147,21 +155,14 @@ namespace Cerberus.API.Migrations
             modelBuilder.Entity("Cerberus.API.Data.RolePermission", b =>
                 {
                     b.Property<string>("PermissionId")
-                        .HasColumnType("varchar(40) CHARACTER SET utf8mb4")
-                        .HasMaxLength(40);
+                        .HasColumnType("varchar(36) CHARACTER SET utf8mb4")
+                        .HasMaxLength(36);
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("varchar(40) CHARACTER SET utf8mb4")
-                        .HasMaxLength(40);
-
-                    b.Property<string>("RoleId1")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(36) CHARACTER SET utf8mb4")
+                        .HasMaxLength(36);
 
                     b.HasKey("PermissionId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("RoleId1");
 
                     b.ToTable("RolePermission");
                 });
@@ -210,6 +211,10 @@ namespace Cerberus.API.Migrations
                         .HasMaxLength(36);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreationTime");
+
+                    b.HasIndex("LastModificationTime");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -317,6 +322,12 @@ namespace Cerberus.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreationTime");
+
+                    b.HasIndex("Email");
+
+                    b.HasIndex("LastModificationTime");
+
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -326,22 +337,22 @@ namespace Cerberus.API.Migrations
 
                     b.HasIndex("PhoneNumber");
 
+                    b.HasIndex("Source");
+
                     b.ToTable("User");
                 });
 
             modelBuilder.Entity("Cerberus.API.Data.UserPermission", b =>
                 {
                     b.Property<string>("PermissionId")
-                        .HasColumnType("varchar(40) CHARACTER SET utf8mb4")
-                        .HasMaxLength(40);
+                        .HasColumnType("varchar(36) CHARACTER SET utf8mb4")
+                        .HasMaxLength(36);
 
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(40) CHARACTER SET utf8mb4")
-                        .HasMaxLength(40);
+                        .HasColumnType("varchar(36) CHARACTER SET utf8mb4")
+                        .HasMaxLength(36);
 
                     b.HasKey("PermissionId", "UserId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UserPermission");
                 });
@@ -458,40 +469,6 @@ namespace Cerberus.API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Cerberus.API.Data.RolePermission", b =>
-                {
-                    b.HasOne("Cerberus.API.Data.Permission", "Permission")
-                        .WithMany()
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cerberus.API.Data.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cerberus.API.Data.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId1");
-                });
-
-            modelBuilder.Entity("Cerberus.API.Data.UserPermission", b =>
-                {
-                    b.HasOne("Cerberus.API.Data.Permission", "Permission")
-                        .WithMany()
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cerberus.API.Data.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Cerberus.API.Data.Role", null)
@@ -504,7 +481,7 @@ namespace Cerberus.API.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("Cerberus.API.Data.User", null)
-                        .WithMany()
+                        .WithMany("UserClaims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
