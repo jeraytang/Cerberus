@@ -48,11 +48,6 @@ namespace Cerberus.API.Controllers
             userId.NotNullOrWhiteSpace(nameof(userId));
             serviceId.NotNullOrWhiteSpace(nameof(serviceId));
 
-            if (userId != Session.UserId)
-            {
-                throw new ApplicationException("Access dined");
-            }
-
             var param = new {UserId = userId, ServiceId = serviceId};
             await using var conn = new MySqlConnection(_options.ConnectionString);
             var permissions = (await conn.QueryAsync<ListPermissionDTO>(
