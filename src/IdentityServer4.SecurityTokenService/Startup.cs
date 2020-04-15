@@ -132,7 +132,7 @@ namespace IdentityServer4.SecurityTokenService
             app.MigrateIdentity();
 
             app.UseAuthorization();
-
+            app.UseAccessDenied();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

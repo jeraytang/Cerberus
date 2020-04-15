@@ -73,6 +73,7 @@ namespace IdentityServer4.SecurityTokenService.Controllers
 			return RedirectToAction(nameof(Profile));
 		}
 
+		[AccessDenied]
 		[HttpGet("Profile")]
 		public async Task<IActionResult> Profile()
 		{
