@@ -2,47 +2,51 @@
 @model IdentityServer4.SecurityTokenService.Models.Account.LoginViewModel
 @inject STSOptions STSOptions
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "统一认证";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
-<h1>Login</h1>
-<hr/>
-<div class="row">
-    @if (Model.EnableLocalLogin)
+<div class="bg"></div>
+<div class="logo">
+   <img src="https://pamirs.com/images/logo.png" alt="logo" style="width: 128px;">
+   <span>连接专业知识，使决策更明智</span>
+</div>
+<div class="content-login">
+@if (Model.EnableLocalLogin)
     {
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    Local Login
-                </div>
+         <div class="card">               
                 <div class="card-body">
+                    <h2 class="card-title">账号登录</h2>
                     <partial name="_ValidationSummary"/>
                     <form method="post">
                         <div class="form-group">
-                            <label asp-for="@Model.Username"></label>
-                            <input asp-for="@Model.Username" class="form-control"/>
+                            @* <label asp-for="@Model.Username"></label> *@
+                            <input asp-for="@Model.Username" class="form-control form-control-lg" placeholder="请输入账号"/>
                             <span asp-validation-for="@Model.Username" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="@Model.Password"></label>
-                            <input type="password" asp-for="@Model.Password" class="form-control"/>
+                        <div class="form-group input-group">
+                            @* <label asp-for="@Model.Password"></label> *@
+                            <input type="password" asp-for="@Model.Password" class="form-control form-control-lg" placeholder="请输入密码"/>
                             <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                            <span class="icon icon-visible" aria-hidden="true"></span>
                         </div>
-                        @if (Model.AllowRememberLogin)
-                        {
-                            <div class="form-group">
-                                <div class="checkbox">
+                        
+                            <div class="form-group form-extra" style="margin-bottom:20px;">
+                                @if (Model.AllowRememberLogin)
+                            {
+                                <div class="form-check checkbox">
                                     <label asp-for="@Model.RememberLogin">
-                                        <input asp-for="@Model.RememberLogin"/>
+                                        <input class="form-check-input" asp-for="@Model.RememberLogin"/>
                                         @(Html.DisplayNameFor(model => model.RememberLogin))
                                     </label>
                                 </div>
-                            </div>
-                        }
+                             }
+                                <a asp-controller="Account" asp-action="ChangePassword">忘记密码</a>
+                             </div>
+                        
                         <div class="form-group">
-                            <button class="btn btn-sm btn-outline-primary" name="button" value="login">Login</button>
-                            <button class="btn btn-sm btn-outline-primary" name="button" value="cancel">Cancel</button>
+                            <button class="btn btn-block btn-primary btn-lg" name="button" value="login">登录</button>
                         </div>
-                        <div class="form-group">
+                        @* <div class="form-group">
                             <p>
                                 <a asp-controller="Account" asp-action="ForgotPassword">Forgot your password?</a>
                             </p>
@@ -52,46 +56,11 @@
                                     <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
                                 </p>
                             }
-                        </div>
+                        </div> *@
                     </form>
                 </div>
             </div>
-        </div>
     }
-    <div class="col-md-8 col-md-offset-2">
-        <section>
-            @{
-                <h4>Use another service to log in.</h4>
-                <hr/>
-                if (!Model.VisibleExternalProviders.Any())
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
-                        @foreach (var provider in Model.VisibleExternalProviders)
-                        {
-                            <button type="submit" class="btn btn-sm btn-outline-primary" name="provider" value="@provider.Name" title="Log in using your @provider.Name account"> @provider.DisplayName</button>
-                        }
-                    </form>
-                }
-            }
-            @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
-            {
-                <div class="alert alert-warning">
-                    <strong>Invalid login request</strong>
-                    There are no login schemes configured for this client.
-                </div>
-            }
-        </section>
-    </div>
-
 </div>
 
 @section Scripts {

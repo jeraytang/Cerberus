@@ -18,7 +18,8 @@ a {
     border-color: #1861ac;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
     color: #fff;
     background-color: #1b6ec2;
     border-color: #1861ac;
@@ -26,7 +27,8 @@ a {
 
 /* Sticky footer styles
 -------------------------------------------------- */
-html, body {
+html,
+body {
     font-size: 13px;
 }
 
@@ -65,19 +67,137 @@ body {
     margin-bottom: 60px;
 }
 
+.logo {
+    position: absolute;
+    top: 50px;
+    left: 80px;
+    color: #fff;
+    font-size: 12px;
+}
+
+.logo span {
+    margin-left: 24px;
+    position: relative;
+    bottom: -5px;
+}
+
+.bg {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: .8;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-image: url(http://www.niftyadmin.cn/html/nifty/img/bg-img/bg-img-6.jpg);
+}
+
+.content-login .card {
+    position: relative;
+    margin: 18vh auto 0;
+    min-width: 270px;
+    width: 500px;
+    height: 480px;
+    font-size: 14px;
+    background: transparent;
+    border: 10px solid rgba(255, 255, 255, 0.4);
+}
+
+.content-login .card-body {
+    background: #fff;
+    padding: 56px 60px;
+}
+
+.content-login .card-title {
+    font-size: 24px;
+    color: #161616;
+    line-height: 32px;
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.content-login .card-title:after {
+    width: 28px;
+    height: 4px;
+    background: linear-gradient(90deg, rgba(95, 144, 241, 1) 0%, rgba(49, 87, 223, 1) 100%);
+    border-radius: 4px;
+    content: '';
+    display: block;
+    top: 10px;
+    position: relative;
+}
+
+.content-login .form-group {
+    margin-bottom: 24px;
+    height: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content-login .form-control,
+.content-login input,
+.content-login .btn {
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    background: rgba(240, 242, 247, 1);
+    border-radius: 4px;
+    height: 48px;
+}
+
+.content-login .form-extra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content-login .form-extra a:hover {
+    text-decoration: none;
+}
+
 .footer {
     position: absolute;
     bottom: 0;
     width: 100%;
     white-space: nowrap;
-    line-height: 60px; /* Vertically center the text there */
+    line-height: 60px;
+    /* Vertically center the text there */
+    text-align: center;
+    font-size: 12px;
+    color: #d5d5d5;
 }
 
-.form-control, .card, input, .btn, .list-group-item:first-child, .list-group-item:last-child, .page-item:last-child .page-link, .page-item:first-child .page-link {
+.footer a {
+    margin-left: 15px;
+    font-size: 12px;
+    color: #d5d5d5;
+}
+
+.footer a:hover {
+    text-decoration: none;
+}
+
+.form-control,
+.card,
+input,
+.btn,
+.list-group-item:first-child,
+.list-group-item:last-child,
+.page-item:last-child .page-link,
+.page-item:first-child .page-link {
     border-radius: 0
 }
 
-.form-control, input, .btn, .pagination, .pagination, .page-item {
+.form-control,
+input,
+.btn,
+.pagination,
+.pagination,
+.page-item {
     height: 27px;
 }
 

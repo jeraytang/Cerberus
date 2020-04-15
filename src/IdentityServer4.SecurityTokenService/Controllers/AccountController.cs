@@ -2,6 +2,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityServer4.SecurityTokenService.Common;
+using IdentityServer4.SecurityTokenService.Models;
 using IdentityServer4.SecurityTokenService.Models.Account;
 using IdentityServer4.SecurityTokenService.Services;
 using IdentityServer4.Services;
@@ -528,6 +529,71 @@ namespace IdentityServer4.SecurityTokenService.Controllers
 				return View(model);
 			}
 		}
+		
+		//
+        // GET: /Account/ForgotPassword
+        [HttpGet("ChangePassword")]
+        [AllowAnonymous]
+        public IActionResult ChangePassword()
+        {
+            return View(new PhoneNumberResetPasswordViewModel());
+        }
+
+        [HttpPost("SendMobilePhoneCode")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SendMobilePhoneCode(string phoneNumber)
+        {
+            var phoneNumberUser = _userManager.Users.FirstOrDefault(x => x.PhoneNumber == phoneNumber);
+            if (phoneNumberUser == null)
+            {
+                SendNotification(nameof(ChangePassword), "Account", NotificationType.Error,
+                    "手机号码不存在!");
+                return RedirectToAction(nameof(ChangePassword));
+            }
+
+            var code = await _userManager.GenerateChangePhoneNumberTokenAsync(phoneNumberUser, phoneNumber);
+            // Generate the token and send it
+            await _smsSender.SendSmsAsync(phoneNumber, code);
+            return View("ChangePassword",new PhoneNumberResetPasswordViewModel {PhoneNumber = phoneNumber});
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> VerifyChangePassword(PhoneNumberResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("ChangePassword",model);
+            }
+            //get user by phone number
+            var user = _userManager.Users.FirstOrDefault(x => x.PhoneNumber == model.PhoneNumber);
+            if (user == null)
+            {
+                ModelState.AddModelError(model.PhoneNumber, "手机号码不存在");
+                return View("ChangePassword",model);
+            }
+
+            var succeeded = await _userManager.VerifyChangePhoneNumberTokenAsync(user, model.Code, model.PhoneNumber);
+            if (!succeeded)
+            {
+                ModelState.AddModelError(model.Code, "验证码错误");
+                return View("ChangePassword",model);
+            }
+
+            var valid = await _userManager.CheckPasswordAsync(user, model.Password);
+            if (!valid)
+            {
+                ModelState.AddModelError("", "密码不规范");
+                return View("ChangePassword",model);
+            }
+
+            //重置密码
+            await _userManager.RemovePasswordAsync(user);
+            await _userManager.AddPasswordAsync(user, model.Password);
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            return Redirect("/");
+        }
+
 
 		#region Helpers
 

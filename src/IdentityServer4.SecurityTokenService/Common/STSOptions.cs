@@ -70,5 +70,9 @@ namespace IdentityServer4.SecurityTokenService.Common
 
 		public bool IncludeWindowsGroups => !string.IsNullOrWhiteSpace(_configuration["IncludeWindowsGroups"]) &&
 		                                    bool.Parse(_configuration["IncludeWindowsGroups"]);
+		public string SmsPostUrl => _configuration["SMS:PostUrl"];
+		public string SmsAccount => _configuration["SMS:Account"];
+		public string SmsPassword => _configuration["SMS:Password"];
+		public string SmsCodeTemplate => _configuration["SMS:CodeTemplate"];
 	}
 }
