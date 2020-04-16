@@ -21,13 +21,15 @@
                     <div class="form-group">
                         @* <label asp-for="@Model.Username"></label> *@
                         <input asp-for="@Model.Username" class="form-control form-control-lg" placeholder="请输入账号"/>
-                        <span asp-validation-for="@Model.Username" class="text-danger"></span>
+                        <div><span asp-validation-for="@Model.Username" class="text-danger"></span></div>
                     </div>
-                    <div class="form-group input-group">
+                    <div class="form-group">
                         @* <label asp-for="@Model.Password"></label> *@
                         <input type="password" asp-for="@Model.Password" class="form-control form-control-lg" placeholder="请输入密码"/>
-                        <span asp-validation-for="@Model.Password" class="text-danger"></span>
-                        <span class="icon icon-visible" aria-hidden="true"></span>
+                        <div>
+                            <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                            <span class="icon icon-visible" aria-hidden="true"></span>
+                        </div>
                     </div>
 
                     <div class="form-group form-extra" style="margin-bottom:20px;">
@@ -40,7 +42,7 @@
                                 </label>
                             </div>
                         }
-                        <a asp-controller="Account" asp-action="ChangePassword">忘记密码</a>
+                        <a class="forgetpwd" asp-controller="Account" asp-action="ChangePassword">忘记密码</a>
                     </div>
 
                     <div class="form-group">

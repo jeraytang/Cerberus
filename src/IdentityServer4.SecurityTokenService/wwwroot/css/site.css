@@ -100,7 +100,7 @@ body {
     margin: 18vh auto 0;
     min-width: 270px;
     width: 500px;
-    height: 480px;
+    /* height: 480px; */
     font-size: 14px;
     background: transparent;
     border: 10px solid rgba(255, 255, 255, 0.4);
@@ -133,9 +133,13 @@ body {
 .content-login .form-group {
     margin-bottom: 24px;
     height: 48px;
-    display: flex;
+    /* display: flex; */
     justify-content: space-between;
     align-items: center;
+}
+
+.content-login .forgetpwd {
+    float: right;
 }
 
 .content-login .form-control,
@@ -144,7 +148,7 @@ body {
     border: 1px solid #ced4da;
     border-radius: .25rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    background: rgba(240, 242, 247, 1);
+    /* background: rgba(240, 242, 247, 1); */
     border-radius: 4px;
     height: 48px;
 }
