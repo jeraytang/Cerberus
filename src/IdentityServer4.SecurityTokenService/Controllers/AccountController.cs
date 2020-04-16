@@ -579,7 +579,7 @@ namespace IdentityServer4.SecurityTokenService.Controllers
                 return View("ChangePassword", model);
             }
 
-            var valid = await _userManager.CheckPasswordAsync(user, model.Password);
+            var valid = await _userManager.CheckPasswordAsync(user, model.NewPassword);
             if (!valid)
             {
                 ModelState.AddModelError("", "密码不规范");
@@ -588,7 +588,7 @@ namespace IdentityServer4.SecurityTokenService.Controllers
 
             //重置密码
             await _userManager.RemovePasswordAsync(user);
-            await _userManager.AddPasswordAsync(user, model.Password);
+            await _userManager.AddPasswordAsync(user, model.NewPassword);
             await _signInManager.SignInAsync(user, isPersistent: false);
             return Redirect("/");
         }
