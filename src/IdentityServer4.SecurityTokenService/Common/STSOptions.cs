@@ -76,5 +76,10 @@ namespace IdentityServer4.SecurityTokenService.Common
         public string SmsPassword => _configuration["SMS:Password"];
         public string SmsCodeTemplate => _configuration["SMS:CodeTemplate"];
         public string AccessDeniedPages => _configuration["AccessDeniedPages"];
+        public string LoinLogo => _configuration["LoinPage:Logo"];
+        public string LoinSlogan => _configuration["LoinPage:Slogan"];
+        public string LoinPoweredBy => _configuration["LoinPage:PoweredBy"];
+        public string LoinICP => _configuration["LoinPage:ICP"];
+        public string LoinPolice => _configuration["LoinPage:Police"];
     }
 }

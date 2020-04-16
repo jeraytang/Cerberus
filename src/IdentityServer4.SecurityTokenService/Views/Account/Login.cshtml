@@ -7,46 +7,46 @@
 }
 <div class="bg"></div>
 <div class="logo">
-   <img src="https://pamirs.com/images/logo.png" alt="logo" style="width: 128px;">
-   <span>连接专业知识，使决策更明智</span>
+    <img src="@STSOptions.LoinLogo" alt="logo" style="width: 128px;">
+    <span>@Html.Raw(STSOptions.LoinSlogan)</span>
 </div>
 <div class="content-login">
-@if (Model.EnableLocalLogin)
+    @if (Model.EnableLocalLogin)
     {
-         <div class="card">               
-                <div class="card-body">
-                    <h2 class="card-title">账号登录</h2>
-                    <partial name="_ValidationSummary"/>
-                    <form method="post">
-                        <div class="form-group">
-                            @* <label asp-for="@Model.Username"></label> *@
-                            <input asp-for="@Model.Username" class="form-control form-control-lg" placeholder="请输入账号"/>
-                            <span asp-validation-for="@Model.Username" class="text-danger"></span>
-                        </div>
-                        <div class="form-group input-group">
-                            @* <label asp-for="@Model.Password"></label> *@
-                            <input type="password" asp-for="@Model.Password" class="form-control form-control-lg" placeholder="请输入密码"/>
-                            <span asp-validation-for="@Model.Password" class="text-danger"></span>
-                            <span class="icon icon-visible" aria-hidden="true"></span>
-                        </div>
-                        
-                            <div class="form-group form-extra" style="margin-bottom:20px;">
-                                @if (Model.AllowRememberLogin)
-                            {
-                                <div class="form-check checkbox">
-                                    <label asp-for="@Model.RememberLogin">
-                                        <input class="form-check-input" asp-for="@Model.RememberLogin"/>
-                                        @(Html.DisplayNameFor(model => model.RememberLogin))
-                                    </label>
-                                </div>
-                             }
-                                <a asp-controller="Account" asp-action="ChangePassword">忘记密码</a>
-                             </div>
-                        
-                        <div class="form-group">
-                            <button class="btn btn-block btn-primary btn-lg" name="button" value="login">登录</button>
-                        </div>
-                        @* <div class="form-group">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">账号登录</h2>
+                <partial name="_ValidationSummary"/>
+                <form method="post">
+                    <div class="form-group">
+                        @* <label asp-for="@Model.Username"></label> *@
+                        <input asp-for="@Model.Username" class="form-control form-control-lg" placeholder="请输入账号"/>
+                        <span asp-validation-for="@Model.Username" class="text-danger"></span>
+                    </div>
+                    <div class="form-group input-group">
+                        @* <label asp-for="@Model.Password"></label> *@
+                        <input type="password" asp-for="@Model.Password" class="form-control form-control-lg" placeholder="请输入密码"/>
+                        <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                        <span class="icon icon-visible" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="form-group form-extra" style="margin-bottom:20px;">
+                        @if (Model.AllowRememberLogin)
+                        {
+                            <div class="form-check checkbox">
+                                <label asp-for="@Model.RememberLogin">
+                                    <input class="form-check-input" asp-for="@Model.RememberLogin"/>
+                                    @(Html.DisplayNameFor(model => model.RememberLogin))
+                                </label>
+                            </div>
+                        }
+                        <a asp-controller="Account" asp-action="ChangePassword">忘记密码</a>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-block btn-primary btn-lg" name="button" value="login">登录</button>
+                    </div>
+                    @* <div class="form-group">
                             <p>
                                 <a asp-controller="Account" asp-action="ForgotPassword">Forgot your password?</a>
                             </p>
@@ -57,9 +57,9 @@
                                 </p>
                             }
                         </div> *@
-                    </form>
-                </div>
+                </form>
             </div>
+        </div>
     }
 </div>
 

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/lib/select2/dist/css/select2.css" asp-append-version="true">
     <link rel="stylesheet" href="~/lib/icheck-bootstrap/icheck-bootstrap.min.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/lib/toastr/build/toastr.min.css" asp-append-version="true"/>
     <environment names="Development">
         <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     </environment>
@@ -86,14 +87,16 @@
 
 <footer class="footer">
     <div class="container">
-        POWERED BY PAMIRS.COM
-        <a href="http://www.beian.miit.gov.cn" target="_blank">沪ICP备19021568号-1</a>
-        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011502012265" target="_blank">沪公网安备：31011502012265-1</a>
+        @Html.Raw(Options.LoinPoweredBy)
+        @Html.Raw(Options.LoinICP)
+        @Html.Raw(Options.LoinPolice)
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
 <script src="~/lib/select2/dist/js/select2.full.min.js" asp-append-version="true"></script>
+<script src="~/lib/toastr/build/toastr.min.js" asp-append-version="true"></script>
+<script src="~/js/id-toast.js"></script>
 @RenderSection("Scripts", required: false)
 </body>
 </html>
