@@ -127,12 +127,12 @@ namespace IdentityServer4.SecurityTokenService
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAccessDenied();
             app.UseMySqlIdentityServer();
             app.MigrateIdentity();
-
+            
             app.UseAuthorization();
-            app.UseAccessDenied();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

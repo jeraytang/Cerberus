@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4.SecurityTokenService.Common;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace IdentityServer4.SecurityTokenService.Extensions
@@ -16,17 +19,25 @@ namespace IdentityServer4.SecurityTokenService.Extensions
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, STSOptions _options)
         {
             var endpoint = context.Features.Get<IEndpointFeature>()?.Endpoint;
-            var accessDeniedAttribute = endpoint?.Metadata.GetMetadata<AccessDeniedAttribute>();
-            if (accessDeniedAttribute != null)
+            if (endpoint != null && !string.IsNullOrWhiteSpace(_options.AccessDeniedPages))
             {
-                //标记禁止访问的特性-跳转主页
-                context.Response.StatusCode = 403;
-                context.Response.Redirect("/");
+                var controllerName = endpoint.Metadata.GetMetadata<ControllerActionDescriptor>()?.ControllerName;
+                var actionName = endpoint.Metadata.GetMetadata<ControllerActionDescriptor>()?.ActionName;
+                var pages = _options.AccessDeniedPages.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => x.ToLower().Trim()).ToList();
+                if (!string.IsNullOrEmpty(controllerName) && !string.IsNullOrEmpty(actionName))
+                {
+                    var route = $"{controllerName.ToLower()}/{actionName.ToLower()}";
+                    if (pages.Contains(route))
+                    {
+                        context.Response.StatusCode = 404;
+                        context.Response.Redirect("/");
+                    }
+                }
             }
-
             await _next(context);
         }
     }
