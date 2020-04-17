@@ -16,6 +16,7 @@ namespace IdentityServer4.SecurityTokenService.Services
         private readonly STSOptions _options;
         private readonly IHostEnvironment _environment;
         private readonly IHttpClientFactory _clientFactory;
+
         public AuthMessageSender(ILogger<AuthMessageSender> logger,
             STSOptions options, IHostEnvironment environment, IHttpClientFactory clientFactory)
         {
@@ -46,12 +47,12 @@ namespace IdentityServer4.SecurityTokenService.Services
             }
         }
 
-        public async Task SendSmsAsync(string number, string code)
+        public async Task SendSmsAsync(string phoneNumber, string code)
         {
             var message = string.Format(_options.SmsCodeTemplate, code);
             if (_environment.IsDevelopment())
             {
-                _logger.LogInformation($"Phone: {number} \r\n Message: {message}");
+                _logger.LogInformation($"Phone: {phoneNumber} \r\n Message: {message}");
             }
             else
             {
@@ -60,14 +61,13 @@ namespace IdentityServer4.SecurityTokenService.Services
                 {
                     {"account", _options.SmsAccount},
                     {"pswd", _options.SmsPassword},
-                    {"mobile", number},
+                    {"mobile", phoneNumber},
                     {"msg", message},
                     {"needstatus", "true"},
                     {"resptype", "json"}
                 };
                 using var body = new FormUrlEncodedContent(dict);
-                var response = await client.PostAsync(_options.SmsPostUrl, body);
-                var content = await response.Content.ReadAsStringAsync();
+                await client.PostAsync(_options.SmsPostUrl, body);
             }
         }
     }
