@@ -15,7 +15,7 @@ namespace IdentityServer4.SecurityTokenService.Models.Account
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "请输入新密码")]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "新密码至少 {2} 个字符长度.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         public string NewPassword { get; set; }
 
@@ -24,5 +24,7 @@ namespace IdentityServer4.SecurityTokenService.Models.Account
         [Display(Name = "Confirm password")]
         [Compare("NewPassword", ErrorMessage = "密码和确认密码不一致！")]
         public string PasswordConfirm { get; set; }
+
+        public string ReturnUrl { get; set; }
     }
 }

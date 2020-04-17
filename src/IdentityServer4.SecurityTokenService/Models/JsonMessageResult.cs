@@ -7,7 +7,7 @@
             return new JsonMessage {code = 200, msg = message};
         }
 
-        public static JsonMessage Fail(string message)
+        public static JsonMessage Fail(string message, object data = null)
         {
             return new JsonMessage {code = 500, msg = message};
         }

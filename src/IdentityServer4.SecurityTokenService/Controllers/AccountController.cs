@@ -534,9 +534,9 @@ namespace IdentityServer4.SecurityTokenService.Controllers
         // GET: /Account/ForgotPassword
         [HttpGet("ChangePassword")]
         [AllowAnonymous]
-        public IActionResult ChangePassword()
+        public IActionResult ChangePassword(string returnUrl)
         {
-            return View(new PhoneNumberResetPasswordViewModel());
+            return View(new PhoneNumberResetPasswordViewModel {ReturnUrl = returnUrl});
         }
 
         [HttpPost("SendMobilePhoneCode")]
@@ -555,12 +555,13 @@ namespace IdentityServer4.SecurityTokenService.Controllers
             return Json(JsonMessageResult.Success("发送成功！"));
         }
 
-        [HttpPost]
+        [HttpPost("VerifyChangePassword")]
         [AllowAnonymous]
         public async Task<IActionResult> VerifyChangePassword(PhoneNumberResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
+                ModelState.AddModelError(string.Empty, "请输入信息!");
                 return View("ChangePassword", model);
             }
 
@@ -568,21 +569,21 @@ namespace IdentityServer4.SecurityTokenService.Controllers
             var user = _userManager.Users.FirstOrDefault(x => x.PhoneNumber == model.PhoneNumber);
             if (user == null)
             {
-                ModelState.AddModelError(model.PhoneNumber, "手机号码不存在");
+                ModelState.AddModelError(nameof(model.PhoneNumber), "手机号码不存在!");
                 return View("ChangePassword", model);
             }
 
             var succeeded = await _userManager.VerifyChangePhoneNumberTokenAsync(user, model.Code, model.PhoneNumber);
             if (!succeeded)
             {
-                ModelState.AddModelError(model.Code, "验证码错误");
+                ModelState.AddModelError(nameof(model.Code), "验证码错误!");
                 return View("ChangePassword", model);
             }
 
             var valid = await _userManager.CheckPasswordAsync(user, model.NewPassword);
             if (!valid)
             {
-                ModelState.AddModelError("", "密码不规范");
+                ModelState.AddModelError(nameof(model.NewPassword), "密码太过简单/不符合规范！");
                 return View("ChangePassword", model);
             }
 
@@ -590,7 +591,9 @@ namespace IdentityServer4.SecurityTokenService.Controllers
             await _userManager.RemovePasswordAsync(user);
             await _userManager.AddPasswordAsync(user, model.NewPassword);
             await _signInManager.SignInAsync(user, isPersistent: false);
-            return Redirect("/");
+            return !string.IsNullOrWhiteSpace(model.ReturnUrl)
+                ? (IActionResult) Redirect(model.ReturnUrl)
+                : RedirectToAction(nameof(Login));
         }
 
 
