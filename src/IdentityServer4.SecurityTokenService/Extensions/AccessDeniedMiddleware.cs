@@ -19,25 +19,25 @@ namespace IdentityServer4.SecurityTokenService.Extensions
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context, STSOptions _options)
+        public async Task InvokeAsync(HttpContext context)
         {
             var endpoint = context.Features.Get<IEndpointFeature>()?.Endpoint;
-            if (endpoint != null && !string.IsNullOrWhiteSpace(_options.AccessDeniedPages))
+            if (endpoint != null)
             {
+                var method = context.Request.Method;
                 var controllerName = endpoint.Metadata.GetMetadata<ControllerActionDescriptor>()?.ControllerName;
                 var actionName = endpoint.Metadata.GetMetadata<ControllerActionDescriptor>()?.ActionName;
-                var pages = _options.AccessDeniedPages.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(x => x.ToLower().Trim()).ToList();
                 if (!string.IsNullOrEmpty(controllerName) && !string.IsNullOrEmpty(actionName))
                 {
-                    var route = $"{controllerName.ToLower()}/{actionName.ToLower()}";
-                    if (pages.Contains(route))
+                    var route = $"{method}/{controllerName}/{actionName}".ToLower();
+                    if (AccessDeniedMiddlewareExtension._accessDeniedPages.ContainsKey(route))
                     {
                         context.Response.StatusCode = 404;
                         context.Response.Redirect("/");
                     }
                 }
             }
+
             await _next(context);
         }
     }
