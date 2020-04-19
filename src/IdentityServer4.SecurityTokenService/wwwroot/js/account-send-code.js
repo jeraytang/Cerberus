@@ -29,12 +29,10 @@
             type:"post",
             data:{"phoneNumber":phoneNumber},
             success:function(data){
-                debugger;
                 if (data.code === 500){
                     $("#phoneval").text(data.msg);
                     reset();
                 }
-
             },
             error:function(data){
                 $.id_toast({msg:"service error！",type: "error"});
