@@ -16,12 +16,14 @@
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title">账号登录</h2>
-                <partial name="_ValidationSummary"/>
+                @* <partial name="_ValidationSummary"/> *@
                 <form method="post">
                     <div class="form-group">
                         @* <label asp-for="@Model.Username"></label> *@
                         <input asp-for="@Model.Username" class="form-control form-control-lg" placeholder="请输入账号"/>
-                        <div><span asp-validation-for="@Model.Username" class="text-danger"></span></div>
+                        <div>
+                            <span asp-validation-for="@Model.Username" class="text-danger"></span>
+                        </div>
                     </div>
                     <div class="form-group">
                         @* <label asp-for="@Model.Password"></label> *@
