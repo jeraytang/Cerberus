@@ -145,7 +145,7 @@ namespace IdentityServer4.SecurityTokenService.Controllers
                 {
                     await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials",
                         clientId: context?.ClientId));
-                    ModelState.AddModelError(nameof(model.Password), "密码git错误！");
+                    ModelState.AddModelError(nameof(model.Password), "密码错误！");
                 }
             }
 
