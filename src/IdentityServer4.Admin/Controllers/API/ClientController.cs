@@ -32,8 +32,10 @@ namespace IdentityServer4.Admin.Controllers.API
 		public async Task<bool> AddAsync(AddClientDTO dto)
 		{
 			var client = _mapper.Map<Client>(dto);
+			client.ClientName = client.ClientName.Trim();
+			client.AllowedScopes = client.AllowedScopes.Trim();
 			client.SetCreationAudited(HttpContext.GetUserId(), HttpContext.GetUserName());
-			return (await _clientRepository.AddAsync(client)) == 1;
+			return await _clientRepository.AddAsync(client) == 1;
 		}
 
 		[HttpGet("{id}")]
@@ -54,6 +56,7 @@ namespace IdentityServer4.Admin.Controllers.API
 			}
 
 			var entity = _mapper.Map(dto, origin);
+			entity.ClientName = entity.ClientName.Trim();
 			entity.SetModificationAudited(HttpContext.GetUserId(), HttpContext.GetUserName());
 			return await _clientRepository.UpdateAsync(entity);
 		}

@@ -6,6 +6,7 @@ using Cerberus.API.Common;
 using Cerberus.API.Data;
 using Cerberus.API.DTO;
 using Cerberus.API.Extensions;
+using Cerberus.API.ViewObject;
 using Dapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -43,39 +44,43 @@ namespace Cerberus.API.Controllers
 
         [HttpGet("{userId}/services/{serviceId}/permissions")]
         [AllowAnonymous]
-        public async Task<IEnumerable<dynamic>> GetPermissionsAsync(string userId, string serviceId)
+        public async Task<IActionResult> GetPermissionsAsync(string userId, string serviceId, string identification)
         {
             userId.NotNullOrWhiteSpace(nameof(userId));
             serviceId.NotNullOrWhiteSpace(nameof(serviceId));
 
-            var param = new {UserId = userId, ServiceId = serviceId};
-            await using var conn = new MySqlConnection(_options.ConnectionString);
-            var permissions = (await conn.QueryAsync<ListPermissionDTO>(
-                $"SELECT b.Id, b.Name, b.Type, b.Module, b.Identification, b.Description FROM UserPermission a LEFT JOIN Permission AS b ON a.PermissionId = b.Id WHERE b.ServiceId = @ServiceId AND a.UserId = @UserId AND b.Expired = false",
-                param)).ToList();
-            permissions.AddRange(await conn.QueryAsync<ListPermissionDTO>(
-                $@"SELECT b.Id, b.Name, b.Type, b.Module, b.Identification, b.Description FROM RolePermission AS a LEFT JOIN Permission AS b ON a.PermissionId = b.Id WHERE a.RoleId IN (
-				SELECT Id FROM UserRole AS c LEFT JOIN Role AS d ON c.RoleId = d.Id WHERE c.UserId = @UserId
-					) AND b.Expired = false AND b.ServiceId = @ServiceId", param));
-            var dict = new Dictionary<string, dynamic>();
-            foreach (var x in permissions)
+            if (string.IsNullOrEmpty(identification))
             {
-                if (!dict.ContainsKey(x.Id))
+                var @out = await GetPermissionListAsync(userId, serviceId);
+                return new JsonResult(@out);
+            }
+            else
+            {
+                var param = new {UserId = userId, ServiceId = serviceId, Identification = identification.ToLower()};
+                await using var conn = new MySqlConnection(_options.ConnectionString);
+                var userPermissionDto = await conn.QueryFirstOrDefaultAsync<UserPermissionDTO>(
+                    $"SELECT a.PermissionId as Id, a.Data as Data, b.Name as Name FROM UserPermission a LEFT JOIN Permission AS b ON a.PermissionId = b.Id WHERE a.UserId = @UserId AND b.ServiceId = @ServiceId AND b.Identification=@Identification",
+                    param);
+                if (userPermissionDto == null)
                 {
-                    dict.Add(x.Id, new
+                    userPermissionDto = await conn.QueryFirstOrDefaultAsync<UserPermissionDTO>(
+                        $@"SELECT a.PermissionId as Id, b.Name as Name, FROM RolePermission AS a LEFT JOIN Permission AS b ON a.PermissionId = b.Id WHERE a.RoleId IN (
+				SELECT Id FROM UserRole AS c LEFT JOIN Role AS d ON c.RoleId = d.Id WHERE c.UserId = @UserId
+					) AND b.ServiceId = @ServiceId AND b.Identification=@Identification", param);
+                    if (userPermissionDto==null)
                     {
-                        x.Id,
-                        x.Service,
-                        x.Module,
-                        x.Name,
-                        x.Identification,
-                        x.Description,
-                        Type = Enum.Parse<PermissionType>(x.Type).ToString()
-                    });
+                        return NotFound();
+                    }
+                    else
+                    {
+                        return new JsonResult(userPermissionDto);
+                    }
+                }
+                else
+                {
+                    return new JsonResult(userPermissionDto);
                 }
             }
-
-            return dict.Values;
         }
 
         [HttpHead("{userId}/services/{serviceId}/permissions")]
@@ -86,18 +91,17 @@ namespace Cerberus.API.Controllers
             serviceId.NotNullOrWhiteSpace(nameof(serviceId));
             identification.NotNullOrWhiteSpace(nameof(identification));
 
-            var param = new {UserId = userId, Identification = identification.ToLower()};
+            var param = new {UserId = userId, ServiceId = serviceId, Identification = identification.ToLower()};
             await using var conn = new MySqlConnection(_options.ConnectionString);
             var id = await conn.QueryFirstOrDefaultAsync<string>(
-                $"SELECT a.PermissionId FROM UserPermission a LEFT JOIN Permission AS b ON a.PermissionId = b.Id WHERE a.UserId = @UserId AND b.Identification=@Identification",
+                $"SELECT a.PermissionId FROM UserPermission a LEFT JOIN Permission AS b ON a.PermissionId = b.Id WHERE a.UserId = @UserId AND b.ServiceId = @ServiceId AND b.Identification = @Identification",
                 param);
-            var hasPermission = !string.IsNullOrWhiteSpace(id);
-            if (!hasPermission)
+            if (string.IsNullOrEmpty(id))
             {
                 id = await conn.QueryFirstOrDefaultAsync<string>(
                     $@"SELECT a.PermissionId FROM RolePermission AS a LEFT JOIN Permission AS b ON a.PermissionId = b.Id WHERE a.RoleId IN (
 				SELECT Id FROM UserRole AS c LEFT JOIN Role AS d ON c.RoleId = d.Id WHERE c.UserId = @UserId
-					) AND b.Identification=@Identification", param);
+					)  AND b.ServiceId = @ServiceId AND b.Identification=@Identification", param);
                 if (string.IsNullOrWhiteSpace(id))
                 {
                     return NotFound();
@@ -178,7 +182,7 @@ namespace Cerberus.API.Controllers
 
         [HttpPost("{userId}/permissions/{permissionId}")]
         [Authorize(Roles = "cerberus-admin,admin")]
-        public async Task<bool> AddPermission(string userId, string permissionId)
+        public async Task<bool> AddPermission(string userId, string permissionId, [FromBody] UserPermissionData data)
         {
             userId.NotNullOrWhiteSpace(nameof(userId));
             permissionId.NotNullOrWhiteSpace(nameof(permissionId));
@@ -194,7 +198,7 @@ namespace Cerberus.API.Controllers
                 throw new ArgumentException("Permission not exists");
             }
 
-            var userPermission = new UserPermission(userId, permissionId);
+            var userPermission = new UserPermission(userId, permissionId, data?.Data);
             await _dbContext.UserPermissions.AddAsync(userPermission);
             await _dbContext.SaveChangesAsync();
             return true;
@@ -552,5 +556,37 @@ namespace Cerberus.API.Controllers
         }
 
         #endregion
+        
+        private async Task<IEnumerable<dynamic>> GetPermissionListAsync(string userId, string serviceId)
+        {
+            var param = new {UserId = userId, ServiceId = serviceId};
+            await using var conn = new MySqlConnection(_options.ConnectionString);
+            var permissions = (await conn.QueryAsync<ListPermissionDTO>(
+                $"SELECT b.Id, b.Name, b.Type, b.Module, b.Identification, b.Description FROM UserPermission a LEFT JOIN Permission AS b ON a.PermissionId = b.Id WHERE b.ServiceId = @ServiceId AND a.UserId = @UserId AND b.Expired = false",
+                param)).ToList();
+            permissions.AddRange(await conn.QueryAsync<ListPermissionDTO>(
+                $@"SELECT b.Id, b.Name, b.Type, b.Module, b.Identification, b.Description FROM RolePermission AS a LEFT JOIN Permission AS b ON a.PermissionId = b.Id WHERE a.RoleId IN (
+            				SELECT Id FROM UserRole AS c LEFT JOIN Role AS d ON c.RoleId = d.Id WHERE c.UserId = @UserId
+            					) AND b.Expired = false AND b.ServiceId = @ServiceId", param));
+            var dict = new Dictionary<string, dynamic>();
+            foreach (var x in permissions)
+            {
+                if (!dict.ContainsKey(x.Id))
+                {
+                    dict.Add(x.Id, new
+                    {
+                        x.Id,
+                        x.Service,
+                        x.Module,
+                        x.Name,
+                        x.Identification,
+                        x.Description,
+                        Type = Enum.Parse<PermissionType>(x.Type).ToString()
+                    });
+                }
+            }
+
+            return dict.Values;
+        }
     }
 }
