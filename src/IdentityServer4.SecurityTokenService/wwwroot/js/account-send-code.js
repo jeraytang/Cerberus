@@ -1,6 +1,18 @@
 ﻿$(function(){
     var timetick = 60;
     var interval;
+    $(".pwd-icon").click(function(){
+        console.log('223232');
+        if ($(".pwd-icon").hasClass('icon-password')) {
+            $(".pwd-icon").removeClass('icon-password');
+            $(".pwd-icon").addClass('icon-text');
+            $(".pwd").attr("type", "text");
+        } else {
+            $(".pwd-icon").removeClass('icon-text');
+            $(".pwd-icon").addClass('icon-password');
+            $(".pwd").attr("type", "password");
+        }
+    })
     function time() {
         if(timetick === 0) {
             reset();
