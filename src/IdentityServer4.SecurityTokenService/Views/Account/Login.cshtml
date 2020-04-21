@@ -15,7 +15,7 @@
     {
         <div class="card">
             <div class="card-body">
-                <h2 class="card-title">账号登录</h2>
+                <h2 class="card-title">密码登录</h2>
                 @* <partial name="_ValidationSummary"/> *@
                 <form method="post">
                     <div class="form-group">
@@ -25,9 +25,10 @@
                             <span asp-validation-for="@Model.Username" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="position: relative;">
                         @* <label asp-for="@Model.Password"></label> *@
-                        <input type="password" asp-for="@Model.Password" class="form-control form-control-lg" placeholder="请输入密码"/>
+                        <i class="icon-password pwd-icon"></i>
+                        <input style="padding-right: 37px;" type="password" asp-for="@Model.Password" class="form-control form-control-lg pwd" placeholder="请输入密码"/>
                         <div>
                             <span asp-validation-for="@Model.Password" class="text-danger"></span>
                             <span class="icon icon-visible" aria-hidden="true"></span>
@@ -35,7 +36,7 @@
                     </div>
 
                     <div class="form-group form-extra" style="margin-bottom:20px;">
-                        @if (Model.AllowRememberLogin)
+                        @* @if (Model.AllowRememberLogin)
                         {
                             <div class="form-check checkbox">
                                 <label asp-for="@Model.RememberLogin">
@@ -43,12 +44,16 @@
                                     @(Html.DisplayNameFor(model => model.RememberLogin))
                                 </label>
                             </div>
-                        }
+                        } *@
+                    <div class="form-group form-check" style="margin: auto 0px;display: flex">
+                        <input style="margin-top: 3px;" type="checkbox" checked class="form-check-input" id="rememberme">
+                        <label class="form-check-label" for="rememberme">记住我</label>
+                    </div>
                         <a class="forgetpwd" asp-controller="Account" asp-action="ChangePassword" asp-route-returnUrl="@Model.ReturnUrl">忘记密码</a>
                     </div>
 
                     <div class="form-group">
-                        <button class="btn btn-block btn-primary btn-lg" name="button" value="login">登录</button>
+                        <button class="btn btn-block btn-primary btn-lg loginButton" name="button" value="login">登录</button>
                     </div>
                     @* <div class="form-group">
                             <p>
@@ -68,5 +73,11 @@
 </div>
 
 @section Scripts {
+    <environment names="Development">
+        <script src="~/js/account-send-code.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/account-send-code.min.js"></script>
+    </environment>
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }

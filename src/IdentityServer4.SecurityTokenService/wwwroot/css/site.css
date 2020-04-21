@@ -92,8 +92,112 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-    background-image: url(http://www.niftyadmin.cn/html/nifty/img/bg-img/bg-img-6.jpg);
+    background-image: url('../image/home-bg.jpg');
 }
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #F0F2F7 inset !important;
+    box-shadow: 0 0 0px 1000px #F0F2F7 inset !important;
+    outline: none;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.1rem rgba(49, 87, 223, 1) !important;
+    /* outline:rgba(49,87,223,1) solid 2px; */
+    /* outline:none; */
+}
+
+.form-control {
+    background-color: #F0F2F7 !important;
+}
+
+.icon-password {
+    position: absolute;
+    right: 18px;
+    top: 19px;
+    z-index:5;
+    background-image: url('../image/password.png');
+    /*引入图片图片*/
+    background-repeat: no-repeat;
+    /*设置图片不重复*/
+    background-position: 0px 0px;
+    /*图片显示的位置*/
+    width: 18px;
+    /*设置图片显示的宽*/
+    height: 12px;
+    /*图片显示的高*/
+}
+
+label {
+    position: relative;
+    cursor: pointer;
+}
+  
+label input {
+    cursor: pointer;
+}
+  
+input:checked + .show-box {
+    background: #ec6337;
+}
+  
+label .show-box {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 16px;
+      height: 16px;
+      border-radius: 2px;
+      border: 1px solid #d8d8d8;
+      background: white; 
+}
+
+label .show-box:before {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 6px;
+        width: 3px;
+        height: 8px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+}
+
+.pwd-icon {
+    cursor: pointer;
+}
+
+.icon-text {
+    position: absolute;
+    right: 18px;
+    top: 19px;
+    z-index:5;
+    background-image: url('../image/text.png');
+    /*引入图片图片*/
+    background-repeat: no-repeat;
+    /*设置图片不重复*/
+    background-position: 0px 0px;
+    /*图片显示的位置*/
+    width: 18px;
+    /*设置图片显示的宽*/
+    height: 12px;
+    /*图片显示的高*/
+}
+
+.loginButton {
+    background:linear-gradient(90deg,rgba(95,144,241,1) 0%,rgba(49,87,223,1) 100%);
+    box-shadow:0px 4px 10px 0px rgba(111,171,253,0.45);
+    border-radius:4px;
+}
+
+.loginLink {
+    font-size:14px;
+    font-weight:400;
+    color:rgba(22,22,22,1);
+    line-height:22px;
+}
+
 
 .content-login .card {
     position: relative;
