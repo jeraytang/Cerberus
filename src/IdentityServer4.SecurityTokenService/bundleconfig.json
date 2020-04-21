@@ -4,5 +4,17 @@
     "inputFiles": [
       "wwwroot/css/site.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/account-send-code.min.js",
+    "inputFiles": [
+      "wwwroot/js/account-send-code.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/id-toast.min.js",
+    "inputFiles": [
+      "wwwroot/js/id-toast.js"
+    ]
   }
 ]

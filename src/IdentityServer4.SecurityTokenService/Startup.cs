@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using AutoMapper;
 using IdentityServer4.AspNetIdentity;
 using IdentityServer4.SecurityTokenService.Extensions;
@@ -127,12 +128,15 @@ namespace IdentityServer4.SecurityTokenService
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            
+            var accessDeniedPages= Configuration.GetSection("AccessDeniedPages").Get<List<AccessDeniedPage>>();
+            app.UseAccessDenied(accessDeniedPages);
+            
             app.UseMySqlIdentityServer();
             app.MigrateIdentity();
-
+            
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

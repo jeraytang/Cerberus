@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using IdentityServer4.SecurityTokenService.Common;
 using MailKit.Net.Smtp;
@@ -13,13 +15,15 @@ namespace IdentityServer4.SecurityTokenService.Services
         private readonly ILogger _logger;
         private readonly STSOptions _options;
         private readonly IHostEnvironment _environment;
+        private readonly IHttpClientFactory _clientFactory;
 
         public AuthMessageSender(ILogger<AuthMessageSender> logger,
-            STSOptions options, IHostEnvironment environment)
+            STSOptions options, IHostEnvironment environment, IHttpClientFactory clientFactory)
         {
             _logger = logger;
             _options = options;
             _environment = environment;
+            _clientFactory = clientFactory;
         }
 
         public async Task SendEmailAsync(string email, string subject, string message)
@@ -43,16 +47,28 @@ namespace IdentityServer4.SecurityTokenService.Services
             }
         }
 
-        public Task SendSmsAsync(string number, string message)
+        public async Task SendSmsAsync(string phoneNumber, string code)
         {
+            var message = string.Format(_options.SmsCodeTemplate, code);
             if (_environment.IsDevelopment())
             {
-                _logger.LogInformation($"Phone: {number} \r\n Message: {message}");
-                return Task.CompletedTask;
+                _logger.LogInformation($"Phone: {phoneNumber} \r\n Message: {message}");
             }
-
-            // Plug in your SMS service here to send a text message.
-            return Task.FromResult(0);
+            else
+            {
+                var client = _clientFactory.CreateClient("SMS_Send");
+                var dict = new Dictionary<string, string>()
+                {
+                    {"account", _options.SmsAccount},
+                    {"pswd", _options.SmsPassword},
+                    {"mobile", phoneNumber},
+                    {"msg", message},
+                    {"needstatus", "true"},
+                    {"resptype", "json"}
+                };
+                using var body = new FormUrlEncodedContent(dict);
+                await client.PostAsync(_options.SmsPostUrl, body);
+            }
         }
     }
 }
