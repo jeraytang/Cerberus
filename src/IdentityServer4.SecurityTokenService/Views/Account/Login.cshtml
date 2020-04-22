@@ -7,7 +7,7 @@
 }
 <div class="bg"></div>
 <div class="logo">
-    <img src="~/image/logo.png" alt="logo" style="width: 142px;">
+     <img src="@STSOptions.LoinLogo" alt="logo" style="width: 142px;">
     <span>@Html.Raw(STSOptions.LoinSlogan)</span>
 </div>
 <div class="content-login">
@@ -15,12 +15,12 @@
     {
         <div class="card">
             <div class="card-body">
-                <h2 class="card-title">密码登录</h2>
+                <h2 class="card-title">登录</h2>
                 @* <partial name="_ValidationSummary"/> *@
                 <form method="post">
                     <div class="form-group">
                         @* <label asp-for="@Model.Username"></label> *@
-                        <input asp-for="@Model.Username" class="form-control form-control-lg" placeholder="请输入账号"/>
+                        <input asp-for="@Model.Username" class="form-control form-control-lg" placeholder="请输入手机号"/>
                         <div>
                             <span asp-validation-for="@Model.Username" class="text-danger"></span>
                         </div>
