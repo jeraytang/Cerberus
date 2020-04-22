@@ -15,7 +15,6 @@ a {
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
-    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active,
@@ -102,7 +101,9 @@ input:-webkit-autofill {
 }
 
 .form-control:focus {
-    box-shadow: 0 0 0 0.1rem rgba(49, 87, 223, 1) !important;
+    border-color: rgba(49, 87, 223, 1) !important;
+    border-width: 2px;
+    /* box-shadow: 0 0 0 0.1rem rgba(49, 87, 223, 1) !important; */
     /* outline:rgba(49,87,223,1) solid 2px; */
     /* outline:none; */
 }
@@ -249,7 +250,7 @@ label .show-box:before {
 .content-login .form-control,
 .content-login input,
 .content-login .btn {
-    border: 1px solid #ced4da;
+    /* border-left: 1px solid #ced4da; */
     border-radius: .25rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     /* background: rgba(240, 242, 247, 1); */
