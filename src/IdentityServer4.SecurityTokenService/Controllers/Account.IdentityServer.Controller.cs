@@ -252,6 +252,38 @@ namespace IdentityServer4.SecurityTokenService.Controllers
 
         //
         // POST: /Manage/ChangePassword
+        [HttpPost("Password2")]
+        public async Task<IActionResult> ChangePassword2Async([FromBody] Changepassword2InputModel model)
+        {
+            //get user by id
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            if (user == null)
+            {
+                return Json(ResultProvider.Fail("请先登录！"));
+            }
+
+            var valid = await _userManager.CheckPasswordAsync(user, model.NewPassword);
+            if (!valid)
+            {
+                return Json(ResultProvider.Fail("密码太过简单，不符合规范！"));
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user,
+                model.OldPassword,
+                model.NewPassword);
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return Json(ResultProvider.Success());
+            }
+            else
+            {
+                return Json(ResultProvider.Fail("旧密码错误！"));
+            }
+        }
+
+        //
+        // POST: /Manage/ChangePassword
         [HttpPost("Password")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePasswordAsync(ChangepasswordInputModel model)
