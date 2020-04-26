@@ -556,20 +556,19 @@ namespace Cerberus.API.Controllers
         }
 
         [HttpPut("{id}/password")]
-        public async Task<IActionResult> ChangePasswordAsync([FromRoute] string id,
-            [FromBody] UserChangePasswordModel model)
+        public async Task<bool> ChangePasswordAsync([FromRoute] string id, [FromBody] UserChangePasswordModel model)
         {
             //get user by id
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
-                return new JsonResult(ResultProvider.Fail("请先登录！"));
+                throw new ArgumentException("用户不存在！");
             }
 
             var valid = await _userManager.CheckPasswordAsync(user, model.OldPassword);
             if (!valid)
             {
-                return new JsonResult(ResultProvider.Fail("旧密码错误！"));
+                throw new ArgumentException("旧密码错误！");
             }
 
             var result = await _userManager.ChangePasswordAsync(user,
@@ -577,16 +576,11 @@ namespace Cerberus.API.Controllers
                 model.NewPassword);
             if (result.Succeeded)
             {
-                return new JsonResult(ResultProvider.Success());
+                return true;
             }
             else
             {
-                if (result.Errors == null) return new JsonResult(ResultProvider.Fail());
-                var failMessage = string.Empty;
-                failMessage =
-                    result.Errors.Aggregate(failMessage, (current, error) => current + (error.Description + ","));
-                failMessage = failMessage.TrimEnd(',');
-                return new JsonResult(ResultProvider.Fail(failMessage));
+                throw new ApplicationException(string.Join(", ", result.Errors.Select(x => x.Description)));
             }
         }
 
