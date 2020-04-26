@@ -30,9 +30,6 @@ namespace IdentityServer4.SecurityTokenService
 
         public IConfiguration Configuration { get; }
 
-        private const string AccountAllowOriginsPolicy = "AccountAllowOrigins";
-
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -105,22 +102,6 @@ namespace IdentityServer4.SecurityTokenService
             services.AddTransient<TokenEndpoint>();
             services.AddSingleton(new Hosting.Endpoint("ExternalToken", "/connect/external-token",
                 typeof(TokenEndpoint)));
-
-            //AddPolicy allow special origins
-            var origins = Configuration.GetSection("AccountCorsOrigins").Get<string[]>();
-            if (origins != null && origins.Length > 0)
-            {
-                services.AddCors(opt =>
-                {
-                    opt.AddPolicy(AccountAllowOriginsPolicy,
-                        config =>
-                        {
-                            config.WithOrigins(origins)
-                                .AllowAnyHeader()
-                                .AllowAnyMethod();
-                        });
-                });
-            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -147,8 +128,6 @@ namespace IdentityServer4.SecurityTokenService
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseCors(AccountAllowOriginsPolicy);
 
             var accessDeniedPages = Configuration.GetSection("AccessDeniedPages").Get<List<AccessDeniedPage>>();
             app.UseAccessDenied(accessDeniedPages);
