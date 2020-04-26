@@ -67,7 +67,7 @@ namespace Cerberus.API.Controllers
                         $@"SELECT a.PermissionId as Id, b.Name as Name, FROM RolePermission AS a LEFT JOIN Permission AS b ON a.PermissionId = b.Id WHERE a.RoleId IN (
 				SELECT Id FROM UserRole AS c LEFT JOIN Role AS d ON c.RoleId = d.Id WHERE c.UserId = @UserId
 					) AND b.ServiceId = @ServiceId AND b.Identification=@Identification", param);
-                    if (userPermissionDto==null)
+                    if (userPermissionDto == null)
                     {
                         return NotFound();
                     }
@@ -555,8 +555,43 @@ namespace Cerberus.API.Controllers
             return true;
         }
 
+        [HttpPut("{id}/password")]
+        public async Task<IActionResult> ChangePasswordAsync([FromRoute] string id,
+            [FromBody] UserChangePasswordModel model)
+        {
+            //get user by id
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return new JsonResult(ResultProvider.Fail("请先登录！"));
+            }
+
+            var valid = await _userManager.CheckPasswordAsync(user, model.OldPassword);
+            if (!valid)
+            {
+                return new JsonResult(ResultProvider.Fail("旧密码错误！"));
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user,
+                model.OldPassword,
+                model.NewPassword);
+            if (result.Succeeded)
+            {
+                return new JsonResult(ResultProvider.Success());
+            }
+            else
+            {
+                if (result.Errors == null) return new JsonResult(ResultProvider.Fail());
+                var failMessage = string.Empty;
+                failMessage =
+                    result.Errors.Aggregate(failMessage, (current, error) => current + (error.Description + ","));
+                failMessage = failMessage.TrimEnd(',');
+                return new JsonResult(ResultProvider.Fail(failMessage));
+            }
+        }
+
         #endregion
-        
+
         private async Task<IEnumerable<dynamic>> GetPermissionListAsync(string userId, string serviceId)
         {
             var param = new {UserId = userId, ServiceId = serviceId};

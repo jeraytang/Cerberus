@@ -24,9 +24,4 @@ namespace IdentityServer4.SecurityTokenService.Models.Settings
     {
         public bool HasPassword { get; set; }
     }
-
-    public class Changepassword2InputModel : ChangepasswordInputModel
-    {
-        [Required] public string UserId { get; set; }
-    }
 }
